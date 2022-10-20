@@ -11,7 +11,7 @@ import com.v6ak.hagen.hardware.raspberryPi.RaspberryPiHealth
 import com.v6ak.hagen.modules.ConfigModule
 import com.v6ak.hagen.output.*
 
-import java.nio.file.Paths
+import java.nio.file.{Files, Paths}
 
 object ExampleMain:
 
@@ -69,8 +69,10 @@ object ExampleMain:
     // b. A dashboard file
     // c. A file you can include in Jinja2 template within Ansible
     // At this moment, it is more complex that it should be.
+    val outDir = Paths.get("out")
+    Files.createDirectories(outDir)
     output(
-      name => Paths.get("out", f"hagen-$name.yaml"),
+      name => outDir.resolve(f"hagen-$name.yaml"),
       // When you use an entity that is neither defined in DefinedItems nor defined by you, you get a failure.
       DefinedItems,
       Map(
