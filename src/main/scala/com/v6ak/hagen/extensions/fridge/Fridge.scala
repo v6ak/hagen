@@ -24,6 +24,33 @@ case class FridgeEntities(
   estimatedEnergy: Entity[Double],
 )
 
+/**
+ * Based on temperature+humidity sensor, it computes various useful metrics for the fridge:
+ *
+ * <ul>
+ * <li>Warning for continuously high humidity. (It uses 24h periods, so it will not bother you just for high humidity
+ *    after every opening the door).
+ * <li>Warning for too high temperature
+ * <li>Power consumption estimate. When temperature is decreasing, it assumes the fridge is cooling. Otherwise, it
+ *    assumes the fridge to be in standby mode.
+ * <li>Door open sensor + door open count. (Based on sudden humidity increase.)
+ * </ul>
+ *
+ *
+ * @param fridgeHumidity
+ * @param fridgeTemperature
+ * @param averageCoolingPower
+ * @param averageStandbyPower
+ * @param entityNamePrefix
+ * @param humidityThreshold
+ * @param tooHumidRatioPercentageLow
+ * @param tooHumidRatioPercentageHigh
+ * @param tooHotLow
+ * @param tooHotHigh
+ * @param doorOpenHumidityDerivativeThreshold
+ * @param fridgeLink
+ * @param fridgeName
+ */
 case class FridgeModule(
   fridgeHumidity: Entity[Double],
   fridgeTemperature: Entity[Double],
