@@ -10,7 +10,7 @@ enum Foo:
 
 final class SampleTest extends AnyFlatSpec with should.Matchers {
 
-  val c = Context()
+  val c = Context.Empty
 
   "constants" should "serialize correctly" in {
     Const(true).asJinja(c) should be ("true")
