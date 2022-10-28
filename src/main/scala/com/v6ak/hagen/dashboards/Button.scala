@@ -9,17 +9,20 @@ case class Button(
   icon: Option[Icon] = None,
   iconHeight: Option[String] = None,
   tapAction: Option[ButtonAction] = None,
+  entity: Option[Entity[_]] = None,
   showIcon: Boolean = DefaultShowIcon,
 ) extends Card:
-  override def toStructure(context: Context): Any = Map(
-    "type" -> "button",
-  ) ++
-    optionalMap("name", name) ++
-    optionalMap("icon", icon.map(_.toStructure)) ++
-    optionalMap("icon_height", iconHeight) ++
-    optionalMap("tap_action", tapAction.map(_.toStructure(context))) ++
-    optionalMap("show_icon", ifNonDefault(showIcon, DefaultShowIcon))
-
+  override def toStructure(context: Context): Any = (
+    Map(
+      "type" -> "button",
+    ) ++
+      optionalMap("name", name) ++
+      optionalMap("icon", icon.map(_.toStructure)) ++
+      optionalMap("icon_height", iconHeight) ++
+      optionalMap("tap_action", tapAction.map(_.toStructure(context))) ++
+      optionalMap("show_icon", ifNonDefault(showIcon, DefaultShowIcon)) ++
+      optionalMap("entity", entity.map(_.name))
+  )
   override def variables: Set[Entity[_]] = tapAction.fold(Set())(_.variables)
 
 object Button:
