@@ -18,15 +18,17 @@ final case class Automation(
     s"automation $id" -> toInnerStructure(context)
   )
 
-  def toInnerStructure(context: Context): Any =
+  def toInnerStructure(context: Context): Any = {
+    val newContext = context.copy(currentAutomation = Some(entity))
     Map(
       "id" -> id,
       "alias" -> alias,
       "mode" -> mode.name,
-      "trigger" -> triggers.map(_.toStructure(context)),
-      "condition" -> conditions.map(_.toStructure(context)),
-      "action" -> actions.map(_.toStructure(context)),
+      "trigger" -> triggers.map(_.toStructure(newContext)),
+      "condition" -> conditions.map(_.toStructure(newContext)),
+      "action" -> actions.map(_.toStructure(newContext)),
     )
+  }
 
   override def variables: Set[Entity[_]] = (
     conditions.flatMap(_.variables) ++ triggers.flatMap(_.variables) ++ actions.flatMap(_.variables)
