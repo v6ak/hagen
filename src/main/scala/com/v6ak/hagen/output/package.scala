@@ -19,8 +19,9 @@ private def extractDefinedItems(definedItems: Any): Set[Entity[_]] = {
 
 
 package object output {
-  def output(f: String => Path, definedItems: Any, items: Map[String, Out]): Unit = {
-    val existing = extractDefinedItems(definedItems)
+  def output(f: String => Path, definedItems: Any, items: Map[String, Out], dynamicallyDefinedItems: Set[String] = Set.empty): Unit = {
+    import com.v6ak.hagen.expressions.StringType
+    val existing = extractDefinedItems(definedItems) ++ dynamicallyDefinedItems.map(Entity[String](_))
     val newlyDefined = items.values.flatMap(_.defined).toSet
     val allDefined = existing ++ newlyDefined
     val used = items.values.flatMap(_.variables).toSet
