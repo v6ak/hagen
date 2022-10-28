@@ -18,7 +18,7 @@ final case class UtilityMeterDef[T](
   cycle: UtilityMeterCycle,
   friendlyName: Option[String] = None,
 )(implicit jinjaType: Type[T]) extends TupleElement:
-  override def toStructure(context: Context): (String, Map[_, _]) = name -> toInnerStructure(context)
+  override def toStructure(context: Context): (String, Map[_, _]) = entity.baseName -> toInnerStructure(context)
 
   def toInnerStructure(context: Context): Map[_, _] = Map(
     "source" -> source.name,
@@ -30,5 +30,3 @@ final case class UtilityMeterDef[T](
   override def defined: Set[Entity[_]] = Set(entity)
 
   def entity = Entity[T](haName("sensor", name))
-
-
