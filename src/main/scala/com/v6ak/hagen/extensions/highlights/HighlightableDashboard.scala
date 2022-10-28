@@ -6,7 +6,7 @@ import com.v6ak.hagen.dashboards.{Card, ConditionalCard, DashboardParts, Horizon
 import com.v6ak.hagen.expressions.{And, Const, Context, Entity, Expr, Or, StringType}
 import com.v6ak.hagen.output.{HagenKey, HagenModule, Templates}
 
-object HighlightableDashboard extends HagenModule:
+case class HighlightableDashboard(footerCards: Seq[Card] = Seq()) extends HagenModule:
 
   override def produces: Set[HagenKey[_]] = Set(DashboardParts, Templates)
 
@@ -52,7 +52,7 @@ object HighlightableDashboard extends HagenModule:
                       "type" -> "button",
                       "name" -> ">>>>",
                       "icon" -> highlightable.icon, //.getOrElse("mdi:chevron-right"),
-                      "tap_action" -> Navigate(link).toStructure(Context.TemporaryHack)
+                      "tap_action" -> Navigate(link),
                     ),
                     variables = Set()
                   ))
@@ -64,7 +64,7 @@ object HighlightableDashboard extends HagenModule:
               allConditions.map(!_),
               Markdown("The most interesting fact about this place is that there is currently nothing interesting.")
             )
-          )
+          ) ++ footerCards
         ).map(_.toStructure(Context.TemporaryHack))
       )
     )

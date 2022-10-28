@@ -33,7 +33,7 @@ object ExampleMain:
 
       // create dashboards
       HighlightableNotifications(autoClear = true),
-      HighlightableDashboard,
+      HighlightableDashboard(),
 
       // ==== put things to the configurations.yaml ====
 
