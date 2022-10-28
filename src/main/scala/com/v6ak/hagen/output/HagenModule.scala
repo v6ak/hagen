@@ -2,7 +2,7 @@ package com.v6ak.hagen.output
 
 import com.v6ak.hagen.{Element, SensorDef, Template}
 import com.v6ak.hagen.automation.Automation
-import com.v6ak.hagen.expressions.{CounterDef, Entity, InputBooleanDef}
+import com.v6ak.hagen.expressions.{CounterDef, Entity, InputBooleanDef, UtilityMeterDef}
 import com.v6ak.{HeteroKey, HeteroMap}
 
 import scala.collection.immutable.Map
@@ -34,6 +34,7 @@ trait SingleHagenKey[T] extends HagenKey[T]:
 object TopLevelKeys extends MapHagenKey[String, Element] {}
 object Automations extends SeqHagenKey[Automation] {}
 object InputBooleans extends SeqHagenKey[InputBooleanDef] {}
+object UtilityMeters extends SeqHagenKey[UtilityMeterDef[_]] {}
 object Sensors extends SeqHagenKey[SensorDef[_]] {}
 object Templates extends SeqHagenKey[Template[_]] {}
 object Counters extends SeqHagenKey[CounterDef] {}
