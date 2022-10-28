@@ -9,6 +9,7 @@ final case class DerivativeSensorDef(
   unitTime: String,
   // unitPrefix: String,
   source: Entity[Double],
+  unit: Option[String] = None,
 ) extends Template[Double] {
 
   def sensorType: String = "sensor"
@@ -22,7 +23,7 @@ final case class DerivativeSensorDef(
     "unit_time" -> unitTime,
     //"unit_prefix" -> unitPrefix,
     "source" -> source.name,
-  )
+  ) ++ optionalMap("unit", unit)
 
   override def defined: Set[Entity[_]] = Set(entity)
 
