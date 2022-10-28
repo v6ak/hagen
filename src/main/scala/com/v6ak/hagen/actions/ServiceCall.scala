@@ -1,5 +1,6 @@
 package com.v6ak.hagen.actions
 
+import com.v6ak.hagen.materializeElements
 import com.v6ak.hagen.expressions.{Context, Entity}
 
 final case class ServiceCall(service: String, entity: Entity[_], data: Map[String, Any] = Map()) extends Action:
@@ -8,7 +9,7 @@ final case class ServiceCall(service: String, entity: Entity[_], data: Map[Strin
     "target" -> Map(
       "entity_id" -> entity.name,
     ),
-  ) ++ (if data.isEmpty then Map() else Map("data" -> data))
+  ) ++ (if data.isEmpty then Map() else Map("data" -> materializeElements(context, data)))
 
   import com.v6ak.hagen.expressions.StringType
 

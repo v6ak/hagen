@@ -1,5 +1,7 @@
 package com.v6ak
 
+import com.v6ak.hagen.expressions.Context
+
 package object hagen:
 
   def haName(entityType: String, name: String): String =
@@ -13,3 +15,10 @@ package object hagen:
     case Seq() => Map()
     case nonEmpty => Map(name -> nonEmpty)
 
+  def materializeElements(context: Context, map: Map[_, _]): Map[_, _] = map.view.mapValues(mapDataValue(context, _)).toMap
+
+  private def mapDataValue(context: Context, e: Any): Any = e match
+    case elem: Element => elem.toStructure(context)
+    case map: Map[_, _] => materializeElements(context, map)
+    case seq: Seq[_] => seq.map(mapDataValue(context, _))
+    case other => other
