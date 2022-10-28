@@ -20,6 +20,7 @@ case class FridgeEntities(
   // tooHot: Entity[Boolean],
   doorOpen: Entity[Boolean],
   doorOpenCounter: Counter,
+  doorOpenDaily: Entity[Int],
   estimatedPower: Entity[Double],
   estimatedEnergy: Entity[Double],
 )
@@ -201,6 +202,10 @@ case class FridgeModule(
     source = estimatedPowerDef.entity,
   )
 
+  private val doorOpenCountDaily = UtilityMeterDef(
+    "fridge door open count daily", doorOpenCounter.entity, UtilityMeterCycle.Daily
+  )
+
   def content: HeteroMap[HagenKey[_]] = HeteroMap(
     Automations -> (outOfRangeAutomations ++ Seq(doorOpenAutomation)),
     InputBooleans -> Seq(tooHumidBooleanDef, tooHotBooleanDef),
@@ -208,6 +213,7 @@ case class FridgeModule(
     Highlightables -> highlightables,
     Sensors -> Seq(temperatureDerivativeDef, estimatedEnergyDef, humidityDerivativeDef, humidityOkRatioDef),
     Counters -> Seq(doorOpenCounter),
+    UtilityMeters -> Seq(doorOpenCountDaily),
     SingleObject[String, FridgeEntities](fridgeName) -> FridgeEntities(
       humidity = fridgeHumidity,
       temperature = fridgeTemperature,
@@ -217,8 +223,8 @@ case class FridgeModule(
       doorOpenCounter = doorOpenCounter.entity,
       estimatedPower = estimatedPowerDef.entity,
       estimatedEnergy = estimatedEnergyDef.entity,
+      doorOpenDaily = doorOpenCountDaily.entity,
     ),
   )
 
-  // TODO: utility meter
 
