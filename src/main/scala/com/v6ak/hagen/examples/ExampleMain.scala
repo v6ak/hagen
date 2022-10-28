@@ -2,7 +2,7 @@ package com.v6ak.hagen.examples
 
 import com.v6ak.hagen.RawElement
 import com.v6ak.hagen.addons.breakingChanges.BreakingChangesConfig
-import com.v6ak.hagen.dashboards.DashboardPages
+import com.v6ak.hagen.dashboards.{DashboardCompositionModule, DashboardPages, Dashboards, Icon}
 import com.v6ak.hagen.examples.DefinedItems.{fridgeHumiditySensor, fridgeTemperatureSensor, rpiPowerStatus}
 import com.v6ak.hagen.extensions.batteryPowered.BatteryPoweredItems
 import com.v6ak.hagen.extensions.fridge.{FridgeDashboard, FridgeModule}
@@ -35,6 +35,14 @@ object ExampleMain:
       // create dashboards
       HighlightableNotifications(autoClear = true),
       HighlightableDashboard(),
+
+      DashboardCompositionModule(
+        "lovelace-home",
+        "lovelace-home",
+        "Home",
+        icon = Icon("mdi:home"),
+        showInSidebar = true,
+      )("overview", "fridge"),
 
       // ==== put things to the configurations.yaml ====
 
@@ -92,8 +100,10 @@ object ExampleMain:
         "sensors" -> YamlOut(Seq(SeqElement(res(Sensors))), indent = " " * 2 * 1),
 
         "input-booleans" -> YamlOut(Seq(MapTuplesElement(res(InputBooleans))), indent = " " * 2 * 1),
-      ) ++ res(DashboardPages).map((name, page) =>
+      ) ++ res(DashboardPages).map((name, page) =>  // export individual dashboard pages
         s"dashboard-page-$name" -> YamlOut(Seq(SeqElement(Seq(page))), indent = " " * 2 * 1)
+      ) ++ res(Dashboards).map((name, dashboard) => // export whole dashboards
+        s"dashboard-$name" -> YamlOut(Seq(dashboard))
       )
     )
 
