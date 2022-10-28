@@ -30,3 +30,20 @@ jobs:
       uses: actions/upload-artifact@v3.1.0
       with:
         path: out
+
+    - name: Archive artifact
+      shell: bash
+      run: |
+        tar \
+          --dereference --hard-dereference \
+          --directory "out" \
+          -czvf "out.tar.gz" \
+          .
+      env:
+        INPUT_PATH: ${{ inputs.path }}
+    - name: Upload artifact
+      uses: actions/upload-artifact@main
+      with:
+        name: github-pages
+        path: out.tar.gz
+        retention-days: 1
