@@ -5,7 +5,7 @@ import com.v6ak.hagen.expressions.{BooleanType, Const, Entity, StringType}
 import com.v6ak.hagen.extensions.highlights.{Highlightable, Highlightables, SimplePositiveCondition}
 import com.v6ak.hagen.output.{HagenKey, SimpleHagenModule}
 
-class RaspberryPiHealth(rpiPowerStatus: Entity[Boolean]) extends SimpleHagenModule :
+class RaspberryPiHealth(rpiPowerStatus: Entity[Boolean]) extends SimpleHagenModule:
   override def content: HeteroMap[HagenKey[_]] = HeteroMap(
     Highlightables -> Seq(
       Highlightable(
