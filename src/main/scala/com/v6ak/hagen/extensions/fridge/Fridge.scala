@@ -203,7 +203,7 @@ case class FridgeModule(
   )
 
   private val doorOpenCountDaily = UtilityMeterDef(
-    "fridge door open count daily", doorOpenCounter.entity, UtilityMeterCycle.Daily
+    s"$entityNamePrefix door open count daily", doorOpenCounter.entity, UtilityMeterCycle.Daily
   )
 
   def content: HeteroMap[HagenKey[_]] = HeteroMap(

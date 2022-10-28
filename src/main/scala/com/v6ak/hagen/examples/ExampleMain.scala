@@ -2,10 +2,10 @@ package com.v6ak.hagen.examples
 
 import com.v6ak.hagen.RawElement
 import com.v6ak.hagen.addons.breakingChanges.BreakingChangesConfig
-import com.v6ak.hagen.dashboards.DashboardParts
+import com.v6ak.hagen.dashboards.{DashboardPages, DashboardParts}
 import com.v6ak.hagen.examples.DefinedItems.{fridgeHumiditySensor, fridgeTemperatureSensor, rpiPowerStatus}
 import com.v6ak.hagen.extensions.batteryPowered.BatteryPoweredItems
-import com.v6ak.hagen.extensions.fridge.FridgeModule
+import com.v6ak.hagen.extensions.fridge.{FridgeDashboard, FridgeModule}
 import com.v6ak.hagen.extensions.highlights.*
 import com.v6ak.hagen.hardware.raspberryPi.RaspberryPiHealth
 import com.v6ak.hagen.modules.ConfigModule
@@ -26,6 +26,7 @@ object ExampleMain:
       ConfigModule(BreakingChangesConfig()),
       // Fridge in defined in Fridge.scala
       Fridge,
+      FridgeDashboard(),
 
       // TODO: Dehumidifier
       // TODO: Lights
@@ -42,6 +43,7 @@ object ExampleMain:
       // We do it just for demonstration that both is possible.
       AutomationsTopLevel(),
       TemplatesTopLevel,
+      UtilityMetersTopLevel,
 
       // You can try to remove the CountersTopLevel. It should produce an error message like this:
       // java.lang.RuntimeException: Some items are used, but aren't defined: HashSet(counter.fridge_door_open_counter)
@@ -92,7 +94,8 @@ object ExampleMain:
         "input-booleans" -> YamlOut(Seq(MapTuplesElement(res(InputBooleans))), indent = " " * 2 * 1),
         "dashboard-overview" -> YamlOut(
           Seq(SeqElement(Seq(RawElement(res(DashboardParts), variables = Set(), defined = Set())))), indent = "  "),
-
+      ) ++ res(DashboardPages).map((name, page) =>
+        s"dashboard-page-$name" -> YamlOut(Seq(SeqElement(Seq(page))), indent = " " * 2 * 1)
       )
     )
 
