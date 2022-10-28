@@ -2,7 +2,7 @@ package com.v6ak.hagen.extensions.highlights
 
 import com.v6ak.HeteroMap
 import com.v6ak.hagen.{BinarySensorDef, Element}
-import com.v6ak.hagen.dashboards.{Card, ConditionalCard, DashboardParts, HorizontalStack, Markdown, RawCard, Navigate}
+import com.v6ak.hagen.dashboards.{Button, Card, ConditionalCard, DashboardParts, HorizontalStack, Icon, Markdown, Navigate, RawCard}
 import com.v6ak.hagen.expressions.{And, Const, Context, Entity, Expr, Or, StringType}
 import com.v6ak.hagen.output.{HagenKey, HagenModule, Templates}
 
@@ -47,15 +47,11 @@ case class HighlightableDashboard(footerCards: Seq[Card] = Seq()) extends HagenM
                   Some(Markdown(
                     createDescription(highlightable),
                   )),
-                  highlightable.link.map(link => RawCard(
-                    Map(
-                      "type" -> "button",
-                      "name" -> ">>>>",
-                      "icon" -> highlightable.icon, //.getOrElse("mdi:chevron-right"),
-                      "tap_action" -> Navigate(link),
-                    ),
-                    variables = Set()
-                  ))
+                  highlightable.link.map(link => Button(
+                    name = Some(">>>>"),
+                    icon = Some(Icon(highlightable.icon)), //.getOrElse("mdi:chevron-right"),
+                    tapAction = Some(Navigate(link)),
+                  )),
                 ).flatten*
               )
             )
