@@ -7,6 +7,8 @@ package object hagen:
   def haName(entityType: String, name: String): String =
     entityType + "." + name.replaceAll("[ :_]+", "_").toLowerCase()
 
+  def ifNonDefault[T](value: T, defaultValue: T): Option[T] = if value == defaultValue then None else Some(value)
+
   def optionalMap[T](name: String, valueOption: Option[T]): Map[String, T] = valueOption.fold(Map.empty)(value =>
     Map(name -> value)
   )
