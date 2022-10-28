@@ -28,7 +28,7 @@ object IntOps {
   extension (e: Expr[Int])
     def +[T <: Int|Double](other: Expr[T]): Expr[T] = BinOp("+")(e, other)
     def *[T <: Int|Double](other: Expr[T]): Expr[T] = BinOp("*")(e, other)
-    def /(other: Expr[Double]): Expr[Double] = BinOp("/")(e, other)
+    def /[T <: Int|Double](other: Expr[T]): Expr[Double] = BinOp("/")(e, other)
     def -(other: Expr[Int]): Expr[Int] = BinOp("-")(e, other)
     def >(other: Expr[Int]): Expr[Boolean] = BinOp(">")(e, other)
     def >=(other: Expr[Int]): Expr[Boolean] = BinOp(">=")(e, other)
