@@ -8,7 +8,7 @@ import com.v6ak.hagen.optionalMap
  */
 case class Entities(
   title: Option[String] = None,
-)(entities: StatsEntity[_]*) extends Card:
+)(entities: (StatsEntity[_]|ConditionalEntity[_])*) extends Card:
   override def toStructure(context: Context): Any = Map(
     "type" -> "entities",
     "entities" -> entities.map(_.toStructure(context)),
