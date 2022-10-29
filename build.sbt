@@ -14,4 +14,8 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.13" % "test"
 
 libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "2.1.0"
 
+libraryDependencies += "com.lihaoyi" %% "upickle" % "1.6.0"
+
 scalacOptions := Seq("-unchecked", "-deprecation")
+
+Compile / run / mainClass  :=  Some("com.v6ak.hagen.examples.ExampleMain")

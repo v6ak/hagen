@@ -2,7 +2,7 @@ package com.v6ak.hagen.examples
 
 import com.v6ak.hagen.RawElement
 import com.v6ak.hagen.addons.breakingChanges.BreakingChangesConfig
-import com.v6ak.hagen.dashboards.{DashboardCompositionModule, DashboardPages, Dashboards, Icon}
+import com.v6ak.hagen.dashboards.{DashboardCompositionModule, DashboardPages, Dashboards, Icon, MdiIcons}
 import com.v6ak.hagen.examples.DefinedItems.{fridgeHumiditySensor, fridgeTemperatureSensor, rpiPowerStatus}
 import com.v6ak.hagen.extensions.batteryPowered.BatteryPoweredItems
 import com.v6ak.hagen.extensions.fridge.{FridgeDashboard, FridgeModule}
@@ -40,7 +40,7 @@ object ExampleMain:
         "lovelace-home",
         "lovelace-home",
         "Home",
-        icon = Icon("mdi:home"),
+        icon = MdiIcons.Home,
         showInSidebar = true,
       )("overview", "fridge"),
 

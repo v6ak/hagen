@@ -2,7 +2,7 @@ package com.v6ak.hagen.extensions.highlights
 
 import com.v6ak.HeteroMap
 import com.v6ak.hagen.{BinarySensorDef, Element}
-import com.v6ak.hagen.dashboards.{Button, Card, ConditionalCard, DashboardPage, DashboardPages, HorizontalStack, Icon, Markdown, Navigate, RawCard}
+import com.v6ak.hagen.dashboards.{Button, Card, ConditionalCard, DashboardPage, DashboardPages, HorizontalStack, Icon, Markdown, MdiIcons, Navigate, RawCard}
 import com.v6ak.hagen.expressions.{And, Const, Context, Entity, Expr, Or, StringType}
 import com.v6ak.hagen.output.{HagenKey, HagenModule, Templates}
 
@@ -35,7 +35,7 @@ case class HighlightableDashboard(footerCards: Seq[Card] = Seq()) extends HagenM
         "overview" -> DashboardPage(
           title = "Overview",
           path = "overview",
-          icon = Icon("mdi:list-status"),
+          icon = MdiIcons.ListStatus,
         )(
           highlightables.sortBy(_.priority).map(highlightable =>
             ConditionalCard(

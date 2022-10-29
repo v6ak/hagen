@@ -28,7 +28,7 @@ class FridgeDashboard(
       title = "Fridge",
       path = "fridge",
       pageType = DashboardPageType.Masonry,
-      icon = Icon("mdi:fridge")
+      icon = MdiIcons.Fridge
     )(
       Glance()(basicEntities ++ Seq(
         Some(StatsEntity(fridgeEntities.estimatedPower, name = Some("estimated power"))),
@@ -45,7 +45,7 @@ class FridgeDashboard(
       Glance()(
         GlanceEntity(
           fridgeEntities.doorOpenDaily,
-          icon = Some(Icon("mdi:door-open")),
+          icon = Some(MdiIcons.DoorOpen),
           name = Some("door open count daily"),
         )
       ),
