@@ -1,5 +1,6 @@
 package com.v6ak.hagen.extensions.highlights
 
+import com.v6ak.hagen.dashboards.Icon
 import com.v6ak.hagen.{DelegatingElement, Element, optionalMap}
 import com.v6ak.hagen.expressions.{Context, Expr}
 
@@ -10,7 +11,7 @@ final case class Highlightable(
   link: Option[String], // TODO: stringly
   description: Expr[String],
   notification: Boolean,
-  icon: String, // TODO: stringly
+  icon: Icon,
   group: Option[String] = None, // TODO: stringly
 ) extends DelegatingElement:
   override def toStructure(context: Context) = Map(

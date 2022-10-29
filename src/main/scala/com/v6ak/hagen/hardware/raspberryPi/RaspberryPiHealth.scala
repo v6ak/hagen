@@ -1,6 +1,7 @@
 package com.v6ak.hagen.hardware.raspberryPi
 
 import com.v6ak.HeteroMap
+import com.v6ak.hagen.dashboards.MdiIcons
 import com.v6ak.hagen.expressions.{BooleanType, Const, Entity, StringType}
 import com.v6ak.hagen.extensions.highlights.{Highlightable, Highlightables, SimplePositiveCondition}
 import com.v6ak.hagen.output.{HagenKey, SimpleHagenModule}
@@ -14,7 +15,7 @@ class RaspberryPiHealth(rpiPowerStatus: Entity[Boolean]) extends SimpleHagenModu
         conditions = Seq(SimplePositiveCondition(rpiPowerStatus, true)),
         priority = 0,
         description = Const("Raspberry Pi power issue!"),
-        icon = "mdi:home-alert-outline",
+        icon = MdiIcons.HomeAlertOutline,
         link = Some("/lovelace-home/system"),
         notification = true,
       ),

@@ -4,6 +4,7 @@ import com.v6ak.HeteroMap
 import com.v6ak.hagen.*
 import com.v6ak.hagen.actions.ServiceCall
 import com.v6ak.hagen.automation.{Automation, Change}
+import com.v6ak.hagen.dashboards.MdiIcons
 import com.v6ak.hagen.expressions.*
 import com.v6ak.hagen.expressions.BooleanOps.*
 import com.v6ak.hagen.expressions.DoubleOps.*
@@ -155,7 +156,7 @@ case class FridgeModule(
           value = true
         )
       ),
-      icon = "mdi:fridge",
+      icon = MdiIcons.Fridge,
       priority = 24,
       link = fridgeLink,
       description = Const(s"$fridgeName has been too humid last 24h"),
@@ -166,7 +167,7 @@ case class FridgeModule(
       conditions = Seq(
         SimplePositiveCondition(tooHotBooleanDef.entity, true)
       ),
-      icon = "mdi:fridge",
+      icon = MdiIcons.Fridge,
       priority = 2,
       link = fridgeLink,
       description = Const(s"$fridgeName is too hot"),

@@ -32,7 +32,7 @@ case class HighlightableNotifications(autoClear: Boolean) extends HagenModule:
                 group = highlightable.group,
                 url = highlightable.link,
                 clickAction = highlightable.link,
-                icon = Some(highlightable.icon),
+                icon = Some(highlightable.icon.toStructure),
                 tag = Some(idBase),
               ),
             )

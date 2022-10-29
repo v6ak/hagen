@@ -47,7 +47,7 @@ case class HighlightableDashboard(footerCards: Seq[Card] = Seq()) extends HagenM
                   )),
                   highlightable.link.map(link => Button(
                     name = Some(">>>>"),
-                    icon = Some(Icon(highlightable.icon)), //.getOrElse("mdi:chevron-right"),
+                    icon = Some(highlightable.icon), //.getOrElse("mdi:chevron-right"),
                     tapAction = Some(Navigate(link)),
                   )),
                 ).flatten *
