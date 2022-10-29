@@ -23,7 +23,7 @@ case class Button(
       optionalMap("show_icon", ifNonDefault(showIcon, DefaultShowIcon)) ++
       optionalMap("entity", entity.map(_.name))
   )
-  override def variables: Set[Entity[_]] = tapAction.fold(Set())(_.variables)
+  override def variables: Set[Entity[_]] = tapAction.fold(Set())(_.variables) ++ entity
 
 object Button:
   val DefaultShowIcon = true
