@@ -195,12 +195,12 @@ case class FridgeModule(
     ),
   )
 
-  // TODO: addability to energy dashboard?
   private val estimatedEnergyDef = IntegrationSensorDef(
     name = s"$fridgeName energy",
     id = s"${entityNamePrefix}_energy",
     unitPrefix = "k",
     source = estimatedPowerDef.entity,
+    method = IntegrationMethod.Left,
   )
 
   private val doorOpenCountDaily = UtilityMeterDef(
