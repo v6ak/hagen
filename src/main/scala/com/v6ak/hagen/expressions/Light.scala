@@ -32,9 +32,9 @@ final case class Light(name: String) extends Entity[Boolean] with SwitchableEnti
 
   def changeBrightness(diff: Expr[Double], transition: Option[Expr[Double]]): Action = turnOn(
     brightnessPct = Some(
-      unsafe.FuncCall("min",
+      min(
         Const(100.0),
-        unsafe.FuncCall("max",
+        max(
           Const(0.0),
           brightnessPercent + diff
         )
