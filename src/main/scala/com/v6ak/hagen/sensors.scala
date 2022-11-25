@@ -77,14 +77,14 @@ object BinarySensorDef:
   def fromEnum[T <: Enum](entity: Entity[T])(implicit tag: ClassTag[T]): Map[T, BinarySensorDef] =
     fromEnum(entity, entity.unprefixedName)
 
-  def fromEnum[T <: Enum](entity: Entity[T], prefix: String)(implicit tag: ClassTag[T]): Map[T, BinarySensorDef] = {
+  def fromEnum[T <: Enum](expr: Expr[T], prefix: String)(implicit tag: ClassTag[T]): Map[T, BinarySensorDef] = {
     val values = tag.runtimeClass.getMethod("values").invoke(null).asInstanceOf[Array[T]]
     Map(
       (
         for (value <- values.toIndexedSeq) yield {
           value -> BinarySensorDef(
             name = s"${prefix} ${value.toString}",
-            state = entity === Const(value),
+            state = expr === Const(value),
           )
         }
       ) *
