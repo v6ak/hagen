@@ -10,7 +10,7 @@ final case class SimplePositiveCondition[T](entity: Entity[T], value: T)(implici
     "state" -> entity.jinjaType.serialize(value),
   )
 
-  override def toImperfectTrigger: Trigger = Change(entity).to(value)
+  override def toImperfectTrigger: Trigger[_] = Change(entity).to(value)
 
   override def toExpr = entity === Const(value)
 

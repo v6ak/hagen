@@ -12,7 +12,7 @@ final case class SimpleNegativeCondition[T](
     "state_not" -> entity.jinjaType.serialize(value),
   )
 
-  override def toImperfectTrigger: Trigger = Change(entity)
+  override def toImperfectTrigger: Trigger[_] = Change(entity)
 
   override def toExpr = entity !== Const(value)
 

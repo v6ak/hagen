@@ -10,6 +10,6 @@ abstract class SimpleCondition[T] extends Element:
 
   def toExpr: Expr[Boolean]
 
-  def toImperfectTrigger: Trigger
+  def toImperfectTrigger: Trigger[_]
 
   def unary_! : SimpleCondition[T]

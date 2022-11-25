@@ -12,7 +12,7 @@ final case class Change[T] private(
   from: Option[T] = None,
   duration: Option[Duration] = None,
   attribute: Option[String] = None
-)(implicit serializer: Type[T]) extends Trigger:
+)(implicit serializer: Type[T]) extends Trigger[Nothing]:
   def toStructure(context: Context) = Map(
     "platform" -> "state",
     "entity_id" -> Seq(entity.name),

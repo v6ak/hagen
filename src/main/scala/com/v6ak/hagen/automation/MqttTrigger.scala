@@ -2,7 +2,7 @@ package com.v6ak.hagen.automation
 
 import com.v6ak.hagen.expressions.{Context, Entity}
 
-final case class MqttTrigger(topic: String) extends Trigger:
+final case class MqttTrigger(topic: String) extends Trigger[Nothing]:
   override def variables: Set[Entity[_]] = Set()
 
   override def toStructure(context: Context): Any = Map(

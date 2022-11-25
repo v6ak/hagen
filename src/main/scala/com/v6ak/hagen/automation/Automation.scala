@@ -9,10 +9,7 @@ import com.v6ak.hagen.expressions.{Context, Entity, Switch}
 final case class Automation(
   id: String,
   alias: String,
-  conditions: Seq[Condition],
-  triggers: Seq[Trigger],
-  actions: Seq[Action],
-  mode: ScriptMode = ScriptMode.Single
+  base: AutomationBase,
 ) extends NakeableElement:
   def toStructure(context: Context): Any = Map(
     s"automation $id" -> toInnerStructure(context)
@@ -23,17 +20,31 @@ final case class Automation(
     Map(
       "id" -> id,
       "alias" -> alias,
-      "mode" -> mode.name,
-      "trigger" -> triggers.map(_.toStructure(newContext)),
-      "condition" -> conditions.map(_.toStructure(newContext)),
-      "action" -> actions.map(_.toStructure(newContext)),
-    )
+    ) ++ base.toStructureFragment(newContext)
   }
 
-  override def variables: Set[Entity[_]] = (
-    conditions.flatMap(_.variables) ++ triggers.flatMap(_.variables) ++ actions.flatMap(_.variables)
-  ).toSet
+  override def variables: Set[Entity[_]] = base.variables
 
   override def defined: Set[Entity[_]] = Set(entity)
 
   def entity = Switch(haName("automation", alias))
+
+
+object Automation:
+  def apply(
+    id: String,
+    alias: String,
+    conditions: Seq[Condition],
+    triggers: Seq[Trigger[_]],
+    actions: Seq[Action],
+    mode: ScriptMode = ScriptMode.Single
+  ): Automation = Automation(
+    id = id,
+    alias = alias,
+    base = AutomationBase(
+      conditions = conditions,
+      triggers = triggers,
+      actions = actions,
+      mode = mode,
+    )
+  )
