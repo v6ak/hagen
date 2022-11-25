@@ -13,16 +13,4 @@ final case class Highlightable(
   notification: Boolean,
   icon: Icon,
   group: Option[String] = None, // TODO: stringly
-) extends DelegatingElement:
-  override def toStructure(context: Context) = Map(
-    "id" -> id,
-    "conditions" -> conditions.map(_.toStructure(context)),
-    "icon" -> icon,
-    "priority" -> priority,
-    "description" -> description.asCompleteJinja(context),
-    "notify" -> notification,
-  ) ++
-    optionalMap("link", link) ++
-    optionalMap("group", group)
-
-  override def subElements: Set[Element] = conditions.toSet
+)
