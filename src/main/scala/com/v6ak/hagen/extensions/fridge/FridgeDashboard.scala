@@ -2,7 +2,6 @@ package com.v6ak.hagen.extensions.fridge
 
 import com.v6ak.HeteroMap
 import com.v6ak.hagen.dashboards.*
-import com.v6ak.hagen.expressions.IntOps.*
 import com.v6ak.hagen.expressions.{Const, Context, DoubleType, Entity, IntType}
 import com.v6ak.hagen.extensions.fridge.{FridgeEntities, FridgeModule}
 import com.v6ak.hagen.output.{HagenKey, HagenModule, SingleObject}

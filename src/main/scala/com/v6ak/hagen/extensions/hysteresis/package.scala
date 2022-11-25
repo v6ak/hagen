@@ -4,8 +4,6 @@ import com.v6ak.hagen.SensorDef
 import com.v6ak.hagen.automation.{Automation, Change}
 import com.v6ak.hagen.conditions.TemplateCondition
 import com.v6ak.hagen.expressions.*
-import com.v6ak.hagen.expressions.BooleanOps.*
-import com.v6ak.hagen.expressions.DoubleOps.*
 
 package object hysteresis:
   def hysteresisSensor(

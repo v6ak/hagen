@@ -2,7 +2,6 @@ package com.v6ak.hagen.expressions
 
 import com.v6ak.hagen.actions.{Action, ConditionalAction, ServiceCall}
 import com.v6ak.hagen.conditions.TemplateCondition
-import com.v6ak.hagen.expressions.BooleanOps.*
 
 trait SwitchableEntity extends Entity[Boolean]:
   def entityType: String

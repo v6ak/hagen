@@ -24,9 +24,6 @@ final case class Light(name: String) extends Entity[Boolean] with SwitchableEnti
 
   def brightnessRaw: Expr[Int] = StateAttr(this, "brightness")
 
-  import DoubleOps.*
-  import IntOps./
-
   def brightnessRatio: Expr[Double] = brightnessRaw / Const(255.0)
   def brightnessPercent: Expr[Double] = brightnessRatio * Const(100.0)
 

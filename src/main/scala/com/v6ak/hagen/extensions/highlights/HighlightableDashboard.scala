@@ -3,7 +3,7 @@ package com.v6ak.hagen.extensions.highlights
 import com.v6ak.HeteroMap
 import com.v6ak.hagen.{BinarySensorDef, Element}
 import com.v6ak.hagen.dashboards.{Button, Card, ConditionalCard, DashboardPage, DashboardPages, HorizontalStack, Icon, Markdown, MdiIcons, Navigate, RawCard}
-import com.v6ak.hagen.expressions.{And, Const, Context, Entity, Expr, Or, StringType}
+import com.v6ak.hagen.expressions.*
 import com.v6ak.hagen.output.{HagenKey, HagenModule, Templates}
 
 case class HighlightableDashboard(footerCards: Seq[Card] = Seq()) extends HagenModule:
@@ -11,8 +11,6 @@ case class HighlightableDashboard(footerCards: Seq[Card] = Seq()) extends HagenM
   override def produces: Set[HagenKey[_]] = Set(DashboardPages, Templates)
 
   private def shownConditions(highlightables: Seq[Highlightable]) = {
-    import com.v6ak.hagen.expressions.BooleanOps.unary_!
-    import com.v6ak.hagen.expressions.BooleanType
     val (conditions, binarySensorDefs) = highlightables.map{h =>
       h.conditions match
         case Seq(condition) => (condition, Seq())
@@ -69,7 +67,7 @@ case class HighlightableDashboard(footerCards: Seq[Card] = Seq()) extends HagenM
     highlightable.link match
       case None => main
       case Some(link) => <a href={link} style="color: auto; text-decoration: none;" class="clickable-alert">{main}</a>*/
-    import com.v6ak.hagen.expressions.StringOps._
+    import com.v6ak.hagen.expressions.StringOps
     val main = Const("<ha-alert>") + highlightable.description + Const("</ha-alert>")
     highlightable.link match
       case None => main

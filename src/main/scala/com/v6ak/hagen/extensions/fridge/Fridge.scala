@@ -6,8 +6,6 @@ import com.v6ak.hagen.actions.ServiceCall
 import com.v6ak.hagen.automation.{Automation, Change}
 import com.v6ak.hagen.dashboards.MdiIcons
 import com.v6ak.hagen.expressions.*
-import com.v6ak.hagen.expressions.BooleanOps.*
-import com.v6ak.hagen.expressions.DoubleOps.*
 import com.v6ak.hagen.extensions.highlights.{Highlightable, Highlightables, SimplePositiveCondition}
 import com.v6ak.hagen.extensions.hysteresis.*
 import com.v6ak.hagen.output.*

@@ -1,6 +1,5 @@
 package com.v6ak.hagen.expressions
 import com.v6ak.hagen.Element
-import com.v6ak.hagen.expressions.BooleanOps.*
 
 trait Expr[T] extends Element:
 

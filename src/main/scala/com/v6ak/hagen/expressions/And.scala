@@ -12,7 +12,6 @@ final class And(a: Expr[Boolean], b: Expr[Boolean]) extends ConditionalBinOp("an
 
 object And:
 
-  import BooleanOps.&&
   def of(seq: Seq[Expr[Boolean]]) = seq match
     case Seq() => Const(true)
     case Seq(first, others*) => others.foldLeft(first)(_ && _)

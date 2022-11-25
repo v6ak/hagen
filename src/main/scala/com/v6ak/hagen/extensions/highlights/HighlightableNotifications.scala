@@ -5,8 +5,7 @@ import com.v6ak.hagen.actions.Notification
 import com.v6ak.hagen.automation
 import com.v6ak.hagen.automation.Automation
 import com.v6ak.hagen.conditions.TemplateCondition
-import com.v6ak.hagen.expressions.{And, Const, StringType}
-import com.v6ak.hagen.expressions.BooleanOps.unary_!
+import com.v6ak.hagen.expressions.*
 import com.v6ak.hagen.output.{Automations, HagenKey, HagenModule}
 
 case class HighlightableNotifications(autoClear: Boolean) extends HagenModule:
