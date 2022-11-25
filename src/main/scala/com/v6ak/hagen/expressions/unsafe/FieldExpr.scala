@@ -1,8 +1,8 @@
 package com.v6ak.hagen.expressions.unsafe
 
-import com.v6ak.hagen.expressions.{Context, Entity, Expr, Transformer}
+import com.v6ak.hagen.expressions.{Context, ContextSafeSyntax, Entity, Expr, Transformer}
 
-class FieldExpr[I, O](a: Expr[I], field: String) extends Expr[O]:
+class FieldExpr[I, O](a: Expr[I], field: String) extends Expr[O] with ContextSafeSyntax:
   override def asJinja(context: Context): String = s"${a.asContextSafeJinja(context)}.$field"
 
   override def transform(transformer: Transformer): Expr[O] = transformer.transformBottomUp(
