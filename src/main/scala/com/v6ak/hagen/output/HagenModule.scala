@@ -8,14 +8,13 @@ import com.v6ak.{HeteroKey, HeteroMap}
 import scala.collection.immutable.Map
 import scala.reflect.ClassTag
 
-trait HagenKey[T] extends HeteroKey[T] {
+trait HagenKey[T] extends HeteroKey[T]:
   def mergeValues(a: T, b: T): T
-}
 
-trait SeqHagenKey[T] extends HagenKey[Seq[T]] {
+trait SeqHagenKey[T] extends HagenKey[Seq[T]]:
   override def mergeValues(a: Seq[T], b: Seq[T]): Seq[T] = a ++ b
-}
-trait MapHagenKey[K, V] extends HagenKey[Map[K, V]] {
+
+trait MapHagenKey[K, V] extends HagenKey[Map[K, V]]:
   override def mergeValues(a: Map[K, V], b: Map[K, V]): Map[K, V] = {
     val intersection = a.keySet.intersect(b.keySet)
     if (intersection.nonEmpty) {
@@ -23,7 +22,6 @@ trait MapHagenKey[K, V] extends HagenKey[Map[K, V]] {
     }
     a ++ b
   }
-}
 
 trait SingleHagenKey[T] extends HagenKey[T]:
   override def mergeValues(a: T, b: T): T =
@@ -40,7 +38,7 @@ object Templates extends SeqHagenKey[Template[_]] {}
 object Counters extends SeqHagenKey[CounterDef] {}
 object Updatables extends SeqHagenKey[Updatable] {}
 
-case class SingleObject[K, T](key: K)(implicit classTag: ClassTag[T]) extends SingleHagenKey[T] {}
+final case class SingleObject[K, T](key: K)(implicit classTag: ClassTag[T]) extends SingleHagenKey[T] {}
 
 trait HagenModule:
   def dependencies: Set[HagenKey[_]]
@@ -56,7 +54,7 @@ trait SimpleHagenModule extends HagenModule:
   }
 
 
-case class State(params: HeteroMap[HagenKey[_]], keysUsed: Set[HagenKey[_]])
+final case class State(params: HeteroMap[HagenKey[_]], keysUsed: Set[HagenKey[_]])
 
 object State:
   val Initial = State(HeteroMap(), Set())
@@ -141,9 +139,8 @@ object ModuleEvaluation:
 enum UpdateState(override val toString: String):
   case Idle extends UpdateState("idle")
 
-case class Updatable(id: String, name: String, deviceType: String){
+final case class Updatable(id: String, name: String, deviceType: String):
   import com.v6ak.hagen.expressions.forEnum
    import com.v6ak.hagen.expressions.BooleanType
   def updateAvailable: Entity[Boolean] = Entity[Boolean](s"binary_sensor.${id}_update_available")
   def updateState: Entity[UpdateState] = Entity[UpdateState](s"sensor.${id}_update_state")
-}
