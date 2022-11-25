@@ -1,8 +1,13 @@
 package com.v6ak.hagen.automation
 
-import com.v6ak.hagen.expressions.{Context, Entity}
+import com.v6ak.hagen.expressions.*
 
-final case class MqttTrigger(topic: String) extends Trigger[Nothing]:
+trait MqttTriggerDescription{}
+
+final implicit class MqttTriggerDescriptionOps(e: Expr[MqttTriggerDescription]) extends AnyVal:
+  def payloadJson: Expr[JsonObject] = unsafe.FieldExpr(e, "payload_json")
+
+final case class MqttTrigger(topic: String) extends Trigger[MqttTriggerDescription]:
   override def variables: Set[Entity[_]] = Set()
 
   override def toStructure(context: Context): Any = Map(
