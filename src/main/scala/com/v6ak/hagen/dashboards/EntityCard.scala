@@ -5,9 +5,9 @@ import com.v6ak.hagen.expressions.{Context, Entity}
 
 case class EntityCard(
   entity: Entity[_],
-  icon: Option[Icon],
-  attribute: Option[String],
-  name: Option[String],
+  icon: Option[Icon] = None,
+  attribute: Option[String] = None,
+  name: Option[String] = None,
 ) extends Card:
   override def toStructure(context: Context): Any = (
     Map(
