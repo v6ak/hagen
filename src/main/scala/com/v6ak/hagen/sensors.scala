@@ -74,6 +74,14 @@ final case class BinarySensorDef(
 
 object BinarySensorDef:
 
+  def selfReferencing(
+    name: String,
+    stateFactory: (Entity[Boolean] => Expr[Boolean]),
+    stateClass: Option[String] = None,
+  ): BinarySensorDef = BinarySensorDef(
+    name = name, state = stateFactory(Entity[Boolean](haName("binary_sensor", name))), stateClass = stateClass
+  )
+
   def fromEnum[T <: Enum](entity: Entity[T])(implicit tag: ClassTag[T]): Map[T, BinarySensorDef] =
     fromEnum(entity, entity.unprefixedName)
 
