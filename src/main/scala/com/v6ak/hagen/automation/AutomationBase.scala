@@ -2,7 +2,7 @@ package com.v6ak.hagen.automation
 
 import com.v6ak.hagen.actions.Action
 import com.v6ak.hagen.conditions.{Condition, TemplateCondition}
-import com.v6ak.hagen.expressions.unsafe.RawExpr
+import com.v6ak.hagen.expressions.unsafe.VarExpr
 import com.v6ak.hagen.expressions.{Context, Entity, Expr}
 import com.v6ak.hagen.hardware.ikea.styrbar.StyrbarAction
 
@@ -12,7 +12,7 @@ final case class AutomationBase(
   conditions: Seq[Condition],
   triggers: Seq[Trigger[_]],
   actions: Seq[Action],
-  mode: ScriptMode = ScriptMode.Single
+  mode: ScriptMode = ScriptMode.Single,
 ):
 
   def toStructureFragment(context: Context): Map[String, Any] = Map(
@@ -32,7 +32,7 @@ class AutomationBaseBuilderStage1(mode: ScriptMode):
   def on[T](triggers: Trigger[T]*): AutomationBaseBuilderStage2[T] = AutomationBaseBuilderStage2(mode, triggers)
 
 
-private def TriggerExpr[T] = RawExpr[T]("""trigger""", Set())
+private def TriggerExpr[T] = VarExpr[T]("""trigger""", Set())
 
 
 class AutomationBaseBuilderStage2[T](mode: ScriptMode, triggers: Seq[Trigger[T]]):
@@ -49,6 +49,8 @@ class AutomationBaseBuilderStage3[T](mode: ScriptMode, triggers: Seq[Trigger[T]]
   def doActions(actions: Action*): AutomationBase = AutomationBase(conditions, triggers, actions, mode)
 
   def doActions(f: Expr[T] => Seq[Action]): AutomationBase = AutomationBase(conditions, triggers, f(TriggerExpr[T]), mode)
+
+  def doAction(f: Expr[T] => Action): AutomationBase = AutomationBase(conditions, triggers, Seq(f(TriggerExpr[T])), mode)
 
 object AutomationBase extends AutomationBaseBuilderStage1(ScriptMode.Single):
   def useMode(mode: ScriptMode): AutomationBaseBuilderStage1 = AutomationBaseBuilderStage1(mode)
