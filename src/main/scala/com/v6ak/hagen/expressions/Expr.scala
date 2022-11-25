@@ -10,6 +10,8 @@ trait Expr[T] extends Element:
   def asCompleteJinja(context: Context): String = s"{{ ${asJinja(context)} }}"
 
   def ===(other: Expr[T]): Expr[Boolean] = unsafe.BinOp("==")(this, other)
+
+  def in(others: Expr[T]*): Expr[Boolean] = Assign(this)(self => Or.of(others.map(self === _)))
   
   def !==(other: Expr[T]): Expr[Boolean] = unsafe.BinOp("!=")(this, other)
 
