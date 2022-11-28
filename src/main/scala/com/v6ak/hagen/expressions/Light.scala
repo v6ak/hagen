@@ -29,12 +29,10 @@ final case class Light(name: String) extends Entity[Boolean] with SwitchableEnti
 
   def changeBrightness(diff: Expr[Double], transition: Option[Expr[Double]]): Action = turnOn(
     brightnessPct = Some(
-      min(
-        Const(100.0),
-        max(
-          Const(0.0),
-          brightnessPercent + diff
-        )
+      bounded(
+        lower = Const(0.0),
+        upper = Const(100.0),
+        value = brightnessPercent + diff
       )
     ),
     transition = transition,
