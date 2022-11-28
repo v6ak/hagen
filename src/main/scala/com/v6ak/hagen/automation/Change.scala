@@ -1,13 +1,13 @@
 package com.v6ak.hagen.automation
 
 import com.v6ak.hagen
-import com.v6ak.hagen.expressions.{Context, Entity, StateAttr, Type}
+import com.v6ak.hagen.expressions.{Context, Entity, ContextDependentEntity, StateAttr, Type}
 import com.v6ak.hagen.optionalMap
 
 import scala.concurrent.duration.Duration
 
 final case class Change[T] private(
-  entity: Entity[_],
+  entity: ContextDependentEntity[_],
   to: Option[T] = None,
   from: Option[T] = None,
   duration: Option[Duration] = None,
@@ -15,7 +15,7 @@ final case class Change[T] private(
 )(implicit serializer: Type[T]) extends Trigger[Nothing]:
   def toStructure(context: Context) = Map(
     "platform" -> "state",
-    "entity_id" -> Seq(entity.name),
+    "entity_id" -> Seq(entity.getName(context)),
   ) ++
     optionalMap("to", to.map(serializer.serialize)) ++
     optionalMap("from", from.map(serializer.serialize)) ++
