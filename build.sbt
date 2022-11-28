@@ -2,10 +2,14 @@ ThisBuild / version := "0.1.0-SNAPSHOT"
 
 ThisBuild / scalaVersion := "3.2.0"
 
+lazy val mdiIcons = (project in file("mdi-icons"))
+
 lazy val hagen = (project in file("."))
   .settings(
     name := "hagen"
   )
+  .aggregate(mdiIcons)
+  .dependsOn(mdiIcons/* % "provided"*/)
 
 
 libraryDependencies += "org.snakeyaml" % "snakeyaml-engine" % "2.4"
