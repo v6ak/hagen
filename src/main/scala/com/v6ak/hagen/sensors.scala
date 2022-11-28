@@ -1,5 +1,6 @@
 package com.v6ak.hagen
 
+import com.v6ak.hagen.dashboards.Icon
 import com.v6ak.hagen.expressions.*
 
 import scala.collection.immutable.Map
@@ -17,8 +18,10 @@ abstract class AbstractSensorDef[T](implicit jinjaType: Type[T]) extends Templat
   def sensorType: String
   def name: String
   def state: Expr[T]
+  def icon: Option[Entity[T] => Expr[Icon]]
   def convertState(value: Expr[T]): Expr[_]
   def stateClass: Option[String]
+  def deviceClass: Option[String]
   def entity: Entity[T] = Entity[T](haName(sensorType, name))
   def unit: Option[String]
   override def toStructure(context: Context): Any = Map(
@@ -28,7 +31,9 @@ abstract class AbstractSensorDef[T](implicit jinjaType: Type[T]) extends Templat
       "state" -> convertState(state).asCompleteJinja(context),
       ) ++
         optionalMap("unit_of_measurement", unit) ++
-        optionalMap("state_class", stateClass)
+        optionalMap("state_class", stateClass) ++
+        optionalMap("device_class", deviceClass) ++
+        optionalMap("icon", icon.map(factory => factory(entity).toStructure(context)))
     )
   )
   def variables: Set[Entity[_]] = state.variables
@@ -57,7 +62,9 @@ final case class SensorDef[T](
   name: String,
   state: Expr[T],
   stateClass: Option[String] = None,
+  deviceClass: Option[String] = None,
   unit: Option[String] = None,
+  icon: Option[Entity[T] => Expr[Icon]] = None,
 )(implicit jinjaType: Type[T]) extends AbstractSensorDef[T]:
   override def convertState(value: Expr[T]): Expr[_] = jinjaType.serializeExpression(value)
   // TODO: SensorDef[Boolean]
@@ -67,6 +74,8 @@ final case class BinarySensorDef(
   name: String,
   state: Expr[Boolean],
   stateClass: Option[String] = None,
+  deviceClass: Option[String] = None,
+  icon: Option[Entity[Boolean] => Expr[Icon]] = None,
 )(implicit jinjaType: Type[Boolean]) extends AbstractSensorDef[Boolean]:
   override def sensorType: String = "binary_sensor"
   override def convertState(value: Expr[Boolean]): Expr[_] = value

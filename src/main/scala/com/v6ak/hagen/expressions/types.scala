@@ -1,5 +1,6 @@
 package com.v6ak.hagen.expressions
 
+import com.v6ak.hagen.dashboards.Icon
 import com.v6ak.hagen.expressions.{Const, Expr}
 import com.v6ak.hagen.expressions.unsafe.*
 import com.v6ak.jinja
@@ -43,6 +44,12 @@ implicit case object StringType extends Type[String]:
   override def convert(expr: Expr[String]): Expr[String] = expr
   override def serialize(value: String): String = value
   override def serializeExpression(value: Expr[String]): Expr[_] = value
+
+implicit case object IconType extends Type[Icon]:
+  override def const(value: Icon): String = jinja.string(value.toStructure)
+  override def convert(expr: Expr[String]): Expr[Icon] = Reinterpret(expr)
+  override def serialize(value: Icon): String = value.toStructure
+  override def serializeExpression(value: Expr[Icon]): Expr[_] = value
 
 implicit case object BooleanType extends Type[Boolean]:
   override def const(value: Boolean): String = if value then "true" else "false"
