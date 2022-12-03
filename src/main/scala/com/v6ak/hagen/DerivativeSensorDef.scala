@@ -3,6 +3,8 @@ package com.v6ak.hagen
 import com.v6ak.hagen.expressions.{Context, DoubleType, Entity}
 import com.v6ak.hagen.{Template, haName}
 
+import scala.concurrent.duration.Duration
+
 final case class DerivativeSensorDef(
   name: String,
   // id: String,
@@ -10,6 +12,7 @@ final case class DerivativeSensorDef(
   // unitPrefix: String,
   source: Entity[Double],
   unit: Option[String] = None,
+  timeWindow: Option[Duration] = None,
 ) extends Template[Double] {
 
   def sensorType: String = "sensor"
@@ -24,6 +27,7 @@ final case class DerivativeSensorDef(
     //"unit_prefix" -> unitPrefix,
     "source" -> source.name,
   ) ++ optionalMap("unit", unit)
+  ++ optionalMap("time_window", timeWindow.map(durationToMap))
 
   override def defined: Set[Entity[_]] = Set(entity)
 

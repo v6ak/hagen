@@ -2,6 +2,8 @@ package com.v6ak
 
 import com.v6ak.hagen.expressions.Context
 
+import scala.concurrent.duration.Duration
+
 package object hagen:
 
   def haName(entityType: String, name: String): String =
@@ -24,3 +26,7 @@ package object hagen:
     case map: Map[_, _] => materializeElements(context, map)
     case seq: Seq[_] => seq.map(mapDataValue(context, _))
     case other => other
+
+  def durationToMap(duration: Duration): Map[String, Any] = {
+    Map("seconds" -> duration.toSeconds)
+  }
