@@ -30,6 +30,7 @@ final case class AutomationBase(
 
 class AutomationBaseBuilderStage1(mode: ScriptMode):
   def on[T](triggers: Trigger[T]*): AutomationBaseBuilderStage2[T] = AutomationBaseBuilderStage2(mode, triggers)
+  def on(cond: Expr[Boolean]): AutomationBaseBuilderStage2[Nothing] = AutomationBaseBuilderStage2(mode, Seq(TemplateTrigger(cond)))
 
 
 private def TriggerExpr[T] = VarExpr[T]("""trigger""", Set())
