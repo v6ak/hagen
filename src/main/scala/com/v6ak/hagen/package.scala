@@ -7,7 +7,7 @@ import scala.concurrent.duration.Duration
 package object hagen:
 
   def haName(entityType: String, name: String): String =
-    entityType + "." + name.replaceAll("[ :_]+", "_").toLowerCase()
+    entityType + "." + name.replaceAll("[ :()_]+", "_").replaceAll("(^_)|(_$)", "").toLowerCase()
 
   def ifNonDefault[T](value: T, defaultValue: T): Option[T] = if value == defaultValue then None else Some(value)
 
