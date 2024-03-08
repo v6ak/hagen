@@ -52,10 +52,10 @@ package object hysteresis:
   }
   
   def combineHysteresisActionsPreferOnUnlessUnknown(seq: Seq[Expr[HysteresisStatus]]): Expr[HysteresisStatus] = AssignSeq(seq) { seq =>
-    def allAre(value: HysteresisStatus) = Or.of(seq.map(_ === Const(value)))
-    allAre(HysteresisStatus.On).matches(
+    def someIs(value: HysteresisStatus) = Or.of(seq.map(_ === Const(value)))
+    someIs(HysteresisStatus.On).matches(
       ifTrue = Const(HysteresisStatus.On),
-      ifFalse = allAre(HysteresisStatus.Keep).matches(
+      ifFalse = someIs(HysteresisStatus.Keep).matches(
         ifTrue = Const(HysteresisStatus.Keep),
         ifFalse = Const(HysteresisStatus.Off)
       )
