@@ -1,10 +1,12 @@
 package com.v6ak
 
 package object jinja {
+
+  private val StringReplacements = Map(
+    '\\' -> "\\\\",
+    '\"' -> "\\\"",
+  ).withDefault(_.toString)
   def string(s: String): String = {
-    if ((s contains '\\')) {
-      throw RuntimeException("Escaping not fully implemented")
-    }
-    s"\"${s.replace("\"", "\\\"")}\""
+    s"\"${s.flatMap(StringReplacements)}\""
   }
 }
