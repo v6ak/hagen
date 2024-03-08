@@ -161,7 +161,7 @@ case class FridgeModule(
       notification = true,
     ),
     Highlightable(
-      id = "${entityNamePrefix}_too_hot",
+      id = s"${entityNamePrefix}_too_hot",
       conditions = Seq(
         SimplePositiveCondition(tooHotBooleanDef.entity, true)
       ),
