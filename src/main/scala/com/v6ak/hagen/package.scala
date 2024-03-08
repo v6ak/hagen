@@ -28,5 +28,14 @@ package object hagen:
     case other => other
 
   def durationToMap(duration: Duration): Map[String, Any] = {
-    Map("seconds" -> duration.toSeconds)
+    val wholeSeconds = duration.toSeconds % 60
+    val wholeNanos = duration.toNanos % 1e9
+    val verboseRes = Map(
+      "seconds" -> (if wholeNanos == 0 then wholeSeconds else wholeSeconds + wholeNanos/1e9),
+      "minutes" -> duration.toMinutes % 60,
+      "hours" -> duration.toHours % 24,
+      "days" -> duration.toDays,
+    )
+    val briefRes = verboseRes.filter(_._2 != 0)
+    if briefRes.nonEmpty then briefRes else Map("seconds" -> 0)
   }
