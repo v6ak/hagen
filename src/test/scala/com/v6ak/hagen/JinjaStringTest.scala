@@ -3,7 +3,7 @@ package com.v6ak.hagen
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
 
-final class JinjaStringTest  extends AnyFlatSpec with should.Matchers:
+final class JinjaStringTest extends AnyFlatSpec with should.Matchers:
   "jinja.string" should "correctly quote simple string" in {
     com.v6ak.jinja.string("hello") should be(""" "hello" """.trim)
   }
