@@ -1,6 +1,6 @@
 package com.v6ak.hagen.extensions.brightnessButtons
 
-import com.v6ak.hagen.actions.{Action, Choose, While}
+import com.v6ak.hagen.actions.{Action, ConditionalAction, While}
 import com.v6ak.hagen.automation.{AutomationBase, ScriptMode, Trigger}
 import com.v6ak.hagen.{actions, expressions}
 import com.v6ak.hagen.expressions.*
@@ -49,13 +49,13 @@ final case class BrightnessAutomationGenerator[C, B, T](
       .providedThat(trigger => source.triggerToButton(trigger).in(allButtons*))
       .doAction { trigger =>
         val button = source.triggerToButton(trigger)
-        Choose.when(
-          condition = button === source.brightnessDownButton,
-          actions = branch(runCondition = light.brightnessRaw > Const(0), brightnessSign = Const(-1.0))
-        ).when(
-          condition = button === source.brightnessUpButton,
-          actions = branch(runCondition = light.brightnessRaw < Const(255), brightnessSign = Const(+1.0))
-        )
+        ConditionalAction
+          .when(button === source.brightnessDownButton)
+          .doActions(
+            branch(runCondition = light.brightnessRaw > Const(0), brightnessSign = Const(-1.0))
+          )
+          .when(button === source.brightnessUpButton)
+          .doActions(branch(runCondition = light.brightnessRaw < Const(255), brightnessSign = Const(+1.0)))
         // If it is any of the stop buttons, just stop.
       }
   }
