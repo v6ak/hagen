@@ -6,15 +6,15 @@ import com.v6ak.hagen.expressions.*
 import scala.collection.immutable.Map
 import scala.reflect.{ClassTag, Enum}
 
+trait EntityDef[E <: Entity[?]] extends Element:
+  def entity: E
 
-trait Template[T] extends Element:
-  // TODO: TemplateDef?
+trait SimpleEntityDef[T] extends EntityDef[Entity[T]]
+
+abstract class GenericSensorDef[T] extends SimpleEntityDef[T]:
   def entity: Entity[T]
 
-abstract class AbstractSensorDef[T](implicit jinjaType: Type[T]) extends Template[T]:
-  // TODO: consider IntegrationSensorDef etc.
-
-  // TODO: EntityDef
+abstract class TemplateSensorDef[T](implicit jinjaType: Type[T]) extends SimpleEntityDef[T]:
   def sensorType: String
   def name: String
   def state: Expr[T]
@@ -39,14 +39,14 @@ abstract class AbstractSensorDef[T](implicit jinjaType: Type[T]) extends Templat
   def variables: Set[Entity[?]] = state.variables
   override def defined: Set[Entity[?]] = Set(entity)
 
-final case class RawTemplate[T](
+final case class RawSensor[T](
   domain: String,
   name: String,
   rawDef: Map[String, Any],
   variables: Set[Entity[?]],
 )(
   implicit jinjaType: Type[T]
-) extends Template[T]:
+) extends GenericSensorDef[T]:
 
   override def entity: Entity[T] = Entity(haName(domain, name))
 
@@ -65,7 +65,7 @@ final case class SensorDef[T](
   deviceClass: Option[String] = None,
   unit: Option[String] = None,
   icon: Option[Entity[T] => Expr[Icon]] = None,
-)(implicit jinjaType: Type[T]) extends AbstractSensorDef[T]:
+)(implicit jinjaType: Type[T]) extends TemplateSensorDef[T]:
   override def convertState(value: Expr[T]): Expr[?] = jinjaType.serializeExpression(value)
   // TODO: SensorDef[Boolean]
   override def sensorType: String = "sensor"
@@ -76,7 +76,7 @@ final case class BinarySensorDef(
   stateClass: Option[String] = None,
   deviceClass: Option[String] = None,
   icon: Option[Entity[Boolean] => Expr[Icon]] = None,
-)(implicit jinjaType: Type[Boolean]) extends AbstractSensorDef[Boolean]:
+)(implicit jinjaType: Type[Boolean]) extends TemplateSensorDef[Boolean]:
   override def sensorType: String = "binary_sensor"
   override def convertState(value: Expr[Boolean]): Expr[?] = value
   override def unit: Option[String] = None

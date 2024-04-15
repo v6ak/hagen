@@ -1,6 +1,6 @@
 package com.v6ak.hagen.output
 
-import com.v6ak.hagen.{AbstractSensorDef, Element, SensorDef, Template}
+import com.v6ak.hagen.{Element, GenericSensorDef, SensorDef, TemplateSensorDef}
 import com.v6ak.hagen.automation.Automation
 import com.v6ak.hagen.expressions.{CounterDef, Entity, InputBooleanDef, UtilityMeterDef}
 import com.v6ak.{HeteroKey, HeteroMap}
@@ -33,8 +33,8 @@ object TopLevelKeys extends MapHagenKey[String, Element] {}
 object Automations extends SeqHagenKey[Automation] {}
 object InputBooleans extends SeqHagenKey[InputBooleanDef] {}
 object UtilityMeters extends SeqHagenKey[UtilityMeterDef[_]] {}
-object Sensors extends SeqHagenKey[Template[_]] {}
-object Templates extends SeqHagenKey[AbstractSensorDef[_]] {}
+object Sensors extends SeqHagenKey[GenericSensorDef[_]] {}
+object Templates extends SeqHagenKey[TemplateSensorDef[_]] {}
 object Counters extends SeqHagenKey[CounterDef] {}
 object Updatables extends SeqHagenKey[Updatable] {}
 

@@ -14,7 +14,7 @@ class IntegrationSensorDef(
   unitPrefix: String,
   source: Entity[Double],
   method: IntegrationMethod = IntegrationMethod.Trapezoidal,
-) extends Template[Double] {
+) extends GenericSensorDef[Double] {
 
   def sensorType: String = "sensor"
 

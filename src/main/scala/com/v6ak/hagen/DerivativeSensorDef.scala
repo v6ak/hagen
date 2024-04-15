@@ -1,7 +1,7 @@
 package com.v6ak.hagen
 
 import com.v6ak.hagen.expressions.{Context, DoubleType, Entity, Type}
-import com.v6ak.hagen.{Template, haName}
+import com.v6ak.hagen.haName
 
 import scala.concurrent.duration.Duration
 
@@ -15,7 +15,7 @@ final case class DerivativeSensorDef[T <: Double|Int](
   timeWindow: Option[Duration] = None,
 )(
   implicit jinjaType: Type[T],
-) extends Template[Double] {
+) extends GenericSensorDef[Double] {
 
   def sensorType: String = "sensor"
 
