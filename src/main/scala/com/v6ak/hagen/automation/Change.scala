@@ -1,7 +1,7 @@
 package com.v6ak.hagen.automation
 
 import com.v6ak.hagen
-import com.v6ak.hagen.expressions.{Context, Entity, ContextDependentEntity, StateAttr, Type}
+import com.v6ak.hagen.expressions.*
 import com.v6ak.hagen.optionalMap
 import com.v6ak.hagen.durationToMap
 
@@ -31,7 +31,7 @@ final case class Change[T] private(
 
   override def variables: Set[Entity[_]] = entity.variables
 
-object Change {
+object Change:
   def apply[T](entity: Entity[T])(implicit serializer: Type[T]): Change[T] = new Change(entity)
   def apply[T](attr: StateAttr[T])(implicit serializer: Type[T]): Change[T] = new Change(attr.entity, attribute = Some(attr.name))
-}
+  def becomesAvailable(entity: Entity[?]): Change[?] = Change(Entity[String](entity.name)).from("unavailable")
