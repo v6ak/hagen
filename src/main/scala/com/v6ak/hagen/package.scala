@@ -31,12 +31,12 @@ package object hagen:
   def durationToMap(duration: Duration): Map[String, Any] = {
     val wholeSeconds = duration.toSeconds % 60
     val wholeNanos = duration.toNanos % 1e9
-    val verboseRes = Map(
+    val verboseRes = Map[String, Long|Double](
       "seconds" -> (if wholeNanos == 0 then wholeSeconds else wholeSeconds + wholeNanos/1e9),
       "minutes" -> duration.toMinutes % 60,
       "hours" -> duration.toHours % 24,
       "days" -> duration.toDays,
     )
-    val briefRes = verboseRes.filter(_._2 != 0)
+    val briefRes = verboseRes.filter(_._2 != 0L)
     if briefRes.nonEmpty then briefRes else Map("seconds" -> 0)
   }
