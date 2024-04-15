@@ -27,6 +27,8 @@ final case class AutomationBase(
     conditions.flatMap(_.variables) ++ triggers.flatMap(_.variables) ++ actions.flatMap(_.variables)
   ).toSet
 
+  def subElements = (conditions ++ triggers ++ actions).toSet
+
   def toAutomation(id: String): Automation = Automation(id = id, alias = id, base = this)
   def toAutomation(id: String, alias: String): Automation = Automation(id = id, alias = alias, base = this)
 
