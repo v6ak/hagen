@@ -12,18 +12,12 @@ trait SwitchableEntity extends Entity[Boolean]:
 
   def turnOff(): Action = ServiceCall(s"$entityType.turn_off", this)
 
-  def turnOffIfOn(): Action = {
-    ConditionalAction(
-      condition = this,
-      ifTrue = Seq(turnOff()),
-    )
-  }
+  def turnOffIfOn(): Action =
+    ConditionalAction.when(this)
+      .doActions(turnOff())
 
-  def turnOnIfOff(): Action = {
-    ConditionalAction(
-      condition = !this,
-      ifTrue = Seq(turnOn()),
-    )
-  }
+  def turnOnIfOff(): Action =
+    ConditionalAction.when(!this)
+      .doActions(turnOn())
 
   def toggle(): Action = ServiceCall(s"$entityType.toggle", this)
