@@ -11,11 +11,13 @@ final case class Light(name: String) extends Entity[Boolean] with SwitchableEnti
     colorTemp: Option[Expr[Double]] = None,
     brightnessPct: Option[Expr[Double]] = None,
     transition: Option[Expr[Double]] = None,
+    effect: Option[Expr[String]] = None
   ): Action = ServiceCall(
     s"$entityType.turn_on", this, data =
       optionalMap("color_temp", colorTemp) ++
         optionalMap("brightness_pct", brightnessPct) ++
         optionalMap("transition", transition)
+        optionalMap("effect", effect)
   )
 
   def decreateBrightness() = DecreaseBrightness(this)
