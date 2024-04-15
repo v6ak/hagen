@@ -67,13 +67,14 @@ case class HighlightableDashboard(footerCards: Seq[Card] = Seq()) extends HagenM
     highlightable.link match
       case None => main
       case Some(link) => <a href={link} style="color: auto; text-decoration: none;" class="clickable-alert">{main}</a>*/
+    val safe = com.v6ak.hagen.expressions.unsafe.FilterExpr[String, String](_: Expr[String], "safe")
     import com.v6ak.hagen.expressions.StringOps
-    val main = Const("<ha-alert>") + highlightable.description + Const("</ha-alert>")
+    val main = safe(Const("<ha-alert>")) + highlightable.description + safe(Const("</ha-alert>"))
     highlightable.link match
       case None => main
       case Some(link) =>
-        Const(s"""<a href="$link" style="color: auto; text-decoration: none;" class="clickable-alert">""")
-          + main + Const("</a>")
+        safe(Const(s"""<a href="$link" style="color: auto; text-decoration: none;" class="clickable-alert"><font color="white">"""))
+          + main + safe(Const("</font></a>"))
 
   }
 
