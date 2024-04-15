@@ -15,3 +15,6 @@ object Or:
   def of(seq: Seq[Expr[Boolean]]) = seq match
     case Seq() => Const(false)
     case Seq(first, others*) => others.foldLeft(first)(_ || _)
+
+  def apply(a: Expr[Boolean], b: Expr[Boolean]) = new Or(a, b)
+  def apply(exprs: Expr[Boolean]*) = of(exprs)
