@@ -12,6 +12,10 @@ def Assign[T, U](value: Expr[T])(f: Expr[T] => Expr[U]): Expr[U] = {
   f(value)
 }
 
+implicit class MonadicAssignment[T](val value: Expr[T]):
+  def map[U](f: Expr[T] => Expr[U]): Expr[U] = Assign(value)(f)
+  def flatMap[U](f: Expr[T] => Expr[U]): Expr[U] = Assign(value)(f)
+
 def AssignSeq[T, U](value: Seq[Expr[T]])(f: Seq[Expr[T]] => Expr[U]): Expr[U] = {
   f(value)
 }
