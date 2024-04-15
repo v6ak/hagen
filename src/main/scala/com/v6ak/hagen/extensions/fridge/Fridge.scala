@@ -72,6 +72,7 @@ case class FridgeModule(
     state = fridgeHumidity < humidityThreshold
   )
 
+  // // TODO: consider excluding something like 45 minutes after door opening
   private val humidityOkRatioDef = RawTemplate[Double](
     domain="sensor",
     name=s"$entityNamePrefix humidity ok last 24h ratio",
@@ -80,7 +81,7 @@ case class FridgeModule(
       "entity_id" -> humidityOkDef.entity.name,
       "state" -> "on",
       "type" -> "ratio",
-      "end" -> "{{ now() }}",
+      "end" -> now().asCompleteJinja(Context.TemporaryHack),
       "duration" -> Map("hours" -> 24)
     ),
     variables = Set(humidityOkDef.entity),
