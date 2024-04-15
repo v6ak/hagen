@@ -3,6 +3,7 @@ package com.v6ak.hagen.automation
 import com.v6ak.hagen
 import com.v6ak.hagen.expressions.{Context, Entity, ContextDependentEntity, StateAttr, Type}
 import com.v6ak.hagen.optionalMap
+import com.v6ak.hagen.durationToMap
 
 import scala.concurrent.duration.Duration
 
@@ -19,7 +20,7 @@ final case class Change[T] private(
   ) ++
     optionalMap("to", to.map(serializer.serialize)) ++
     optionalMap("from", from.map(serializer.serialize)) ++
-    optionalMap("for", duration.map(duration => Map("seconds" -> duration.toSeconds))) ++
+    optionalMap("for", duration.map(duration => durationToMap(duration))) ++
     optionalMap("attribute", attribute)
 
 
