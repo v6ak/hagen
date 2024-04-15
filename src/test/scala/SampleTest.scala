@@ -30,7 +30,7 @@ final class SampleTest extends AnyFlatSpec with should.Matchers {
 
   "entities" should "serialize correctly" in {
     // TODO: use single fetch for BooleanEntity
-    Entity[Boolean]("chachar").asJinja(c) should be("""false if (states("chachar") == "off") else (true if (states("chachar") == "on") else (unexpected_value))""")
+    Entity[Boolean]("chachar").asJinja(c) should be("""false if (states("chachar") == "off") else (true if (states("chachar") == "on") else (unexpected_value()))""")
     Entity[Int]("chachar").asJinja(c) should be("states(\"chachar\") | int")
     Entity[Double]("chachar").asJinja(c) should be("states(\"chachar\") | float")
     Entity[String]("chachar").asJinja(c) should be("states(\"chachar\")")
@@ -38,7 +38,7 @@ final class SampleTest extends AnyFlatSpec with should.Matchers {
   }
 
   "entities" should "serialize correctly context-safe" in {
-    Entity[Boolean]("chachar").asContextSafeJinja(c) should be("""(false if (states("chachar") == "off") else (true if (states("chachar") == "on") else (unexpected_value)))""")
+    Entity[Boolean]("chachar").asContextSafeJinja(c) should be("""(false if (states("chachar") == "off") else (true if (states("chachar") == "on") else (unexpected_value())))""")
     Entity[Int]("chachar").asContextSafeJinja(c) should be("(states(\"chachar\") | int)")
     Entity[Double]("chachar").asContextSafeJinja(c) should be("(states(\"chachar\") | float)")
     Entity[String]("chachar").asContextSafeJinja(c) should be("states(\"chachar\")")
