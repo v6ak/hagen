@@ -14,8 +14,8 @@ final case class BrightnessAutomationGenerator[C, B, T](
 ):
 
   def withTimeBasedBoost(f: Expr[Int] => Expr[Double]): BrightnessAutomationGenerator[C, B, T] = {
-    val durationExpr = expressions.unsafe.BinOp("-")(expressions.unsafe.FuncCall("now"), CurrentAutomationEntity.LastTriggered)
-    val durationMicrosExpr: Expr[Int] = expressions.unsafe.FieldExpr(durationExpr, "microseconds")
+    val durationExpr = now() - CurrentAutomationEntity.LastTriggered
+    val durationMicrosExpr: Expr[Int] = durationExpr.microseconds
     copy(boostExpr = Some(f(durationMicrosExpr)))
   }
 
