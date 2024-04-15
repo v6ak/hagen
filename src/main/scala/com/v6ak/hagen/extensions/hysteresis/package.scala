@@ -61,3 +61,22 @@ package object hysteresis:
       )
     )
   }
+
+  def combineHysteresisActionsPreferExtremesAndOn(seq: Seq[Expr[HysteresisStatus]]): Expr[HysteresisStatus] = AssignSeq(seq) { seq =>
+    combineHysteresisActions(seq, HysteresisStatus.On, HysteresisStatus.Off)
+  }
+
+  def combineHysteresisActions(seq: Seq[Expr[HysteresisStatus]], first: HysteresisStatus, second: HysteresisStatus): Expr[HysteresisStatus] = AssignSeq(seq) { seq =>
+    val missingValues: Set[HysteresisStatus] = HysteresisStatus.values.toSet -- Seq(first, second)
+    val third = missingValues.toSeq match
+      case Seq(single) => single
+      case other => throw IllegalArgumentException(s"First and second seem to be the same: $first, $second")
+    def someIs(value: HysteresisStatus) = Or.of(seq.map(_ === Const(value)))
+    someIs(first).matches(
+      ifTrue = Const(first),
+      ifFalse = someIs(second).matches(
+        ifTrue = Const(second),
+        ifFalse = Const(third)
+      )
+    )
+  }
