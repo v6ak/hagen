@@ -7,6 +7,7 @@ import com.v6ak.hagen.expressions.{Context, Entity, Expr}
 type Conditions = Seq[Condition]
 type Actions = Seq[Action]
 
+@deprecated("Use ConditionalAction instead")
 abstract class Choose extends Action{
   def branches: Seq[(Conditions, Actions)]
   def defaultOption: Option[Actions]
@@ -43,6 +44,7 @@ trait ChooseBuilder {
     when(conditions = Seq(TemplateCondition(condition)), actions = actions)
 }
 
+@deprecated("Use ConditionalAction instead")
 object Choose extends ChooseBuilder{
   def when(conditions: Conditions, actions: Actions) = ChooseWithoutDefault(branches = Seq((conditions, actions)))
 }
