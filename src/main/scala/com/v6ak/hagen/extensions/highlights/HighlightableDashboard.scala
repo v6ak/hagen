@@ -2,7 +2,7 @@ package com.v6ak.hagen.extensions.highlights
 
 import com.v6ak.HeteroMap
 import com.v6ak.hagen.{BinarySensorDef, Element}
-import com.v6ak.hagen.dashboards.{Button, Card, ConditionalCard, DashboardPage, DashboardPages, HorizontalStack, Icon, Markdown, MdiIcons, Navigate, RawCard}
+import com.v6ak.hagen.dashboards.{Button, Card, ConditionalCard, DashboardPage, DashboardPageType, DashboardPages, HorizontalStack, Icon, Markdown, MdiIcons, Navigate, VerticalStack}
 import com.v6ak.hagen.expressions.*
 import com.v6ak.hagen.output.{HagenKey, HagenModule, Templates}
 
@@ -34,7 +34,8 @@ case class HighlightableDashboard(footerCards: Seq[Card] = Seq()) extends HagenM
           title = "Overview",
           path = "overview",
           icon = MdiIcons.ListStatus,
-        )(
+          pageType = DashboardPageType.Masonry
+        )(VerticalStack(
           highlightables.sortBy(_.priority).map(highlightable =>
             ConditionalCard(
               conditions = highlightable.conditions,
@@ -57,7 +58,7 @@ case class HighlightableDashboard(footerCards: Seq[Card] = Seq()) extends HagenM
               Markdown("The most interesting fact about this place is that there is currently nothing interesting.")
             )
           ) ++ footerCards
-        *)
+        *))
       ),
     )
   }
