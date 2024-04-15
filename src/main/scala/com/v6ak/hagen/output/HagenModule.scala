@@ -53,6 +53,32 @@ trait SimpleHagenModule extends HagenModule:
     content
   }
 
+trait TreeHagenModule extends HagenModule:
+  def subModules: Seq[HagenModule]
+  def nodeDependencies: Set[HagenKey[_]]
+  def nodeProduces: Set[HagenKey[_]]
+  def nodeContent: HeteroMap[HagenKey[_]]
+
+  final override def dependencies: Set[HagenKey[_]] = subModules.flatMap(_.dependencies).toSet ++ nodeDependencies
+
+  final override def produces: Set[HagenKey[_]] = subModules.flatMap(_.produces).toSet ++ nodeProduces
+
+  final override def content(params: HeteroMap[HagenKey[_]]): HeteroMap[HagenKey[_]] = {
+    val modules = subModules ++ Seq(TreeNodeHagenModule(this))
+    ModuleEvaluation.evalModuleSequence(modules).params
+  }
+
+
+trait SimpleTreeHagenModule extends TreeHagenModule:
+
+  final def nodeDependencies: Set[HagenKey[_]] = Set.empty
+  final def nodeProduces: Set[HagenKey[_]] = nodeContent.keySet
+
+private class TreeNodeHagenModule(thm: TreeHagenModule) extends HagenModule:
+  override def dependencies: Set[HagenKey[_]] = thm.nodeDependencies
+  override def produces: Set[HagenKey[_]] = thm.nodeProduces
+  override def content(params: HeteroMap[HagenKey[_]]): HeteroMap[HagenKey[_]] = thm.nodeContent
+
 
 final case class State(params: HeteroMap[HagenKey[_]], keysUsed: Set[HagenKey[_]])
 
@@ -95,7 +121,7 @@ object ModuleEvaluation:
     evalModuleSequence(moduleSequence)
   }
 
-  private def evalModuleSequence(values: Seq[HagenModule]): State = {
+  private[output] def evalModuleSequence(values: Seq[HagenModule]): State = {
     values.foldLeft[State](State.Initial)((state: State, module: HagenModule) => {
       val params = state.params.filteredKeys(module.dependencies)
       val newKeysUsed = state.keysUsed ++ params.keySet
