@@ -73,7 +73,7 @@ case class FridgeModule(
   )
 
   // // TODO: consider excluding something like 45 minutes after door opening
-  private val humidityOkRatioDef = RawSensor[Double](
+  private val humidityOkRatioDef = RawSensorDef[Double](
     domain="sensor",
     name=s"$entityNamePrefix humidity ok last 24h ratio",
     rawDef = Map(

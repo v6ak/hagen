@@ -39,7 +39,7 @@ abstract class TemplateSensorDef[T](implicit jinjaType: Type[T]) extends SimpleE
   def variables: Set[Entity[?]] = state.variables
   override def defined: Set[Entity[?]] = Set(entity)
 
-final case class RawSensor[T](
+final case class RawSensorDef[T](
   domain: String,
   name: String,
   rawDef: Map[String, Any],
