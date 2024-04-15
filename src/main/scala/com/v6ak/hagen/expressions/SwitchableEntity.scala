@@ -7,6 +7,10 @@ trait SwitchableEntity extends Entity[Boolean]:
   def entityType: String
 
   def turn(state: Boolean): Action = if state then turnOn() else turnOff()
+  def turn(state: Expr[Boolean]): Action =
+    ConditionalAction.when(state)
+      .doActions(turnOn())
+      .ifFalse(turnOff())
 
   def turnOn(): Action = ServiceCall(s"$entityType.turn_on", this)
 
