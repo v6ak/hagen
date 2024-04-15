@@ -62,6 +62,8 @@ implicit final class DoubleOps(protected val e: Expr[Double]) extends AnyVal wit
 
   def asDatetime: Expr[Instant] = FilterExpr(e, "as_datetime")
 
+  def ceil: Expr[Double] = FilterExpr(e, FuncCall("round", Const(0), Const("ceil")))
+  def floor: Expr[Double] = FilterExpr(e, FuncCall("round", Const(0), Const("floor")))
   def toInt: Expr[Int] = FilterExpr(e, "int")
 
   def atLeast(other: Expr[Double]): Expr[Double] = max(e, other)
@@ -96,5 +98,22 @@ implicit final class EnumOps[T <: scala.reflect.Enum] (e: Expr[T]) extends AnyVa
     if (keySet != expectedKeySet) {
       throw RuntimeException(s"keySet != expectedKeySet: $keySet != $expectedKeySet")
     }
-    ???
+    e.matched(options.map((key, value) => Const(key) -> value)*)(UnexpectedValue())
   }
+
+implicit final class DateTimeOps[T <: Instant|NaiveDateTime](protected val e: Expr[T]) extends OrderingOps[T]: // extends AnyVal: https://github.com/lampepfl/dotty/issues/16464
+  import unsafe.*
+  @targetName("minusDateTime")
+  def -(other: Expr[T]): Expr[Duration] = BinOp("-")(e, other)
+  @targetName("minusDuration")
+  def -(other: Expr[Duration]): Expr[T] = BinOp("-")(e, other)
+  def +(other: Expr[Duration]): Expr[T] = BinOp("+")(e, other)
+
+  def timestamp: Expr[Int] = FuncCall.onObject(e)("timestamp")
+
+implicit final class DurationOps(protected val e: Expr[Duration]) extends AnyVal with OrderingOps[Duration]:
+  import unsafe.*
+  def microseconds: Expr[Int] = FieldExpr(e, "microseconds")
+  def seconds: Expr[Int] = FieldExpr(e, "seconds")
+
+  def /(other: Expr[Duration]): Expr[Double] = BinOp("/")(e, other)
