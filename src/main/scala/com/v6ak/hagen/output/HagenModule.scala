@@ -141,6 +141,7 @@ enum UpdateState(override val toString: String):
 
 final case class Updatable(id: String, name: String, deviceType: String):
   import com.v6ak.hagen.expressions.forEnum
-   import com.v6ak.hagen.expressions.BooleanType
+  import com.v6ak.hagen.expressions.*
+  def updateEntity: Entity[String] = Entity(s"update.$id")
   def updateAvailable: Entity[Boolean] = Entity[Boolean](s"binary_sensor.${id}_update_available")
   def updateState: Entity[UpdateState] = Entity[UpdateState](s"sensor.${id}_update_state")
