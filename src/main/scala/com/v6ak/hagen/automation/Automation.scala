@@ -3,7 +3,7 @@ package com.v6ak.hagen.automation
 import com.v6ak.hagen.{Element, NakeableElement, haName}
 import com.v6ak.hagen.actions.Action
 import com.v6ak.hagen.conditions.Condition
-import com.v6ak.hagen.expressions.{Context, Entity, Switch}
+import com.v6ak.hagen.expressions.{AutomationEntity, Context, Entity, Switch}
 
 
 final case class Automation(
@@ -27,7 +27,7 @@ final case class Automation(
 
   override def defined: Set[Entity[_]] = Set(entity)
 
-  def entity = Switch(haName("automation", alias))
+  def entity = AutomationEntity(haName("automation", alias))
 
 
 object Automation:
