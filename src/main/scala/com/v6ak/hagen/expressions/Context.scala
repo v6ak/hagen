@@ -4,7 +4,7 @@ import com.v6ak.hagen.automation.Automation
 
 final case class Context (
   notYetDone: Boolean = true,
-  currentAutomation: Option[SwitchableEntity] = None
+  currentAutomation: Option[AutomationEntity] = None
 )
 
 object Context {
