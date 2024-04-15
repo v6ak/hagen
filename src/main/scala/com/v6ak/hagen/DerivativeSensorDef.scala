@@ -1,18 +1,20 @@
 package com.v6ak.hagen
 
-import com.v6ak.hagen.expressions.{Context, DoubleType, Entity}
+import com.v6ak.hagen.expressions.{Context, DoubleType, Entity, Type}
 import com.v6ak.hagen.{Template, haName}
 
 import scala.concurrent.duration.Duration
 
-final case class DerivativeSensorDef(
+final case class DerivativeSensorDef[T <: Double|Int](
   name: String,
   // id: String,
   unitTime: String,
   // unitPrefix: String,
-  source: Entity[Double],
+  source: Entity[T],
   unit: Option[String] = None,
   timeWindow: Option[Duration] = None,
+)(
+  implicit jinjaType: Type[T],
 ) extends Template[Double] {
 
   def sensorType: String = "sensor"
