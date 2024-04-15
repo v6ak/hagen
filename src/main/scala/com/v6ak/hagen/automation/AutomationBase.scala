@@ -7,6 +7,7 @@ import com.v6ak.hagen.expressions.{Context, Entity, Expr}
 import com.v6ak.hagen.hardware.ikea.styrbar.StyrbarAction
 
 import scala.annotation.targetName
+import scala.concurrent.duration.Duration
 
 final case class AutomationBase(
   conditions: Seq[Condition],
@@ -30,7 +31,7 @@ final case class AutomationBase(
 
 class AutomationBaseBuilderStage1(mode: ScriptMode):
   def on[T](triggers: Trigger[T]*): AutomationBaseBuilderStage2[T] = AutomationBaseBuilderStage2(mode, triggers)
-  def on(cond: Expr[Boolean]): AutomationBaseBuilderStage2[Nothing] = AutomationBaseBuilderStage2(mode, Seq(TemplateTrigger(cond)))
+  def on(cond: Expr[Boolean]): AutomationBaseBuilderStage2WithTemplate = AutomationBaseBuilderStage2WithTemplate(mode, cond)
 
 
 private def TriggerExpr[T] = VarExpr[T]("""trigger""", Set())
@@ -45,6 +46,10 @@ class AutomationBaseBuilderStage2[T](mode: ScriptMode, triggers: Seq[Trigger[T]]
   def providedThat(conditions: Expr[T] => Condition): AutomationBaseBuilderStage3[T] = AutomationBaseBuilderStage3(mode, triggers, Seq(conditions(TriggerExpr[T])))
   @targetName("providedThatSingleTemplateCondition")
   def providedThat(conditions: Expr[T] => Expr[Boolean]): AutomationBaseBuilderStage3[T] = AutomationBaseBuilderStage3(mode, triggers, Seq(TemplateCondition(conditions(TriggerExpr[T]))))
+
+class AutomationBaseBuilderStage2WithTemplate(mode: ScriptMode, cond: Expr[Boolean]) extends AutomationBaseBuilderStage2[Nothing](mode, Seq(TemplateTrigger(cond))):
+  def duration(duration: Duration) = AutomationBaseBuilderStage2[Nothing](mode, Seq(TemplateTrigger(cond).duration(duration)))
+
 
 class AutomationBaseBuilderStage3[T](mode: ScriptMode, triggers: Seq[Trigger[T]], conditions: Seq[Condition]):
   def doActions(actions: Action*): AutomationBase = AutomationBase(conditions, triggers, actions, mode)
