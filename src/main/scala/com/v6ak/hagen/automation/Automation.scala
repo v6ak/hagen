@@ -1,6 +1,6 @@
 package com.v6ak.hagen.automation
 
-import com.v6ak.hagen.{Element, NakeableElement, haName}
+import com.v6ak.hagen.{Element, EntityDef, NakeableElement, haName}
 import com.v6ak.hagen.actions.Action
 import com.v6ak.hagen.conditions.Condition
 import com.v6ak.hagen.expressions.{AutomationEntity, Context, Entity, Switch}
@@ -10,7 +10,7 @@ final case class Automation(
   id: String,
   alias: String,
   base: AutomationBase,
-) extends NakeableElement:
+) extends NakeableElement with EntityDef[AutomationEntity]:
   def toStructure(context: Context): Any = Map(
     s"automation $id" -> toInnerStructure(context)
   )
