@@ -13,6 +13,6 @@ object Context {
    * Put it where you don't know what Context to use.
    * TODO: remove it
    */
-  @deprecated
+  @deprecated("Just for transition")
   val TemporaryHack = Empty
 }
