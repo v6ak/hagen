@@ -47,6 +47,8 @@ class AutomationBaseBuilderStage2[T](mode: ScriptMode, triggers: Seq[Trigger[T]]
   @targetName("providedThatSingleTemplateCondition")
   def providedThat(conditions: Expr[T] => Expr[Boolean]): AutomationBaseBuilderStage3[T] = AutomationBaseBuilderStage3(mode, triggers, Seq(TemplateCondition(conditions(TriggerExpr[T]))))
 
+  def noMatterWhat(): AutomationBaseBuilderStage3[T] = providedThat()
+
 class AutomationBaseBuilderStage2WithTemplate(mode: ScriptMode, cond: Expr[Boolean]) extends AutomationBaseBuilderStage2[Nothing](mode, Seq(TemplateTrigger(cond))):
   def duration(duration: Duration) = AutomationBaseBuilderStage2[Nothing](mode, Seq(TemplateTrigger(cond).duration(duration)))
 
