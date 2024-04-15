@@ -62,6 +62,18 @@ implicit final class DoubleOps(protected val e: Expr[Double]) extends AnyVal wit
   def betweenInclusive(lower: Expr[Double], upper: Expr[Double]) = Assign(e)(value =>
     (lower <= value) && (value <= upper)
   )
+  def betweenDegreesInclusive(lower: Expr[Double], upper: Expr[Double]) =
+    for
+      value <- normalizeAngleDeg(e)
+      lower <- normalizeAngleDeg(lower)
+      upper <- normalizeAngleDeg(upper)
+    yield
+      Or(
+        (lower <= value) && (value <= upper), // 0 <= lower <= value <= upper (mod 360)
+        (upper < lower) && (lower <= value), // lower <= 0 <= value <= upper (mod 360)
+        (upper < lower) && (value <= upper), // lower <= value <= 0 <= upper (mod 360)
+      )
+
   def unary_- : Expr[Double] = UnOp("-")(e)
 
   def asDatetime: Expr[Instant] = FilterExpr(e, "as_datetime")
