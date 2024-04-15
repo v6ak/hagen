@@ -67,7 +67,6 @@ final case class SensorDef[T](
   icon: Option[Entity[T] => Expr[Icon]] = None,
 )(implicit jinjaType: Type[T]) extends TemplateSensorDef[T]:
   override def convertState(value: Expr[T]): Expr[?] = jinjaType.serializeExpression(value)
-  // TODO: SensorDef[Boolean]
   override def sensorType: String = "sensor"
 
 final case class BinarySensorDef(
