@@ -7,6 +7,8 @@ import com.v6ak.hagen.optionalMap
 final case class Light(name: String) extends Entity[Boolean] with SwitchableEntity {
   override def entityType: String = "light"
 
+  def effect: StateAttr[String] = StateAttr(this, "effect")
+
   def turnOn(
     colorTemp: Option[Expr[Double]] = None,
     brightnessPct: Option[Expr[Double]] = None,
