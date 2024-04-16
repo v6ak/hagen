@@ -16,7 +16,7 @@ final case class Light(name: String) extends Entity[Boolean] with SwitchableEnti
     s"$entityType.turn_on", this, data =
       optionalMap("color_temp", colorTemp) ++
         optionalMap("brightness_pct", brightnessPct) ++
-        optionalMap("transition", transition)
+        optionalMap("transition", transition) ++
         optionalMap("effect", effect)
   )
 
