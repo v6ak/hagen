@@ -2,13 +2,14 @@ package com.v6ak.hagen.extensions.fridge
 
 import com.v6ak.HeteroMap
 import com.v6ak.hagen.*
-import com.v6ak.hagen.actions.ServiceCall
 import com.v6ak.hagen.automation.{Automation, Change}
 import com.v6ak.hagen.dashboards.MdiIcons
 import com.v6ak.hagen.expressions.*
 import com.v6ak.hagen.extensions.highlights.{Highlightable, Highlightables, SimplePositiveCondition}
 import com.v6ak.hagen.extensions.hysteresis.*
 import com.v6ak.hagen.output.*
+
+import scala.concurrent.duration.DurationInt
 
 case class FridgeEntities(
   humidity: Entity[Double],
@@ -73,18 +74,12 @@ case class FridgeModule(
   )
 
   // // TODO: consider excluding something like 45 minutes after door opening
-  private val humidityOkRatioDef = RawSensorDef[Double](
-    domain="sensor",
-    name=s"$entityNamePrefix humidity ok last 24h ratio",
-    rawDef = Map(
-      "platform" -> "history_stats",
-      "entity_id" -> humidityOkDef.entity.name,
-      "state" -> "on",
-      "type" -> "ratio",
-      "end" -> now().asCompleteJinja(Context.TemporaryHack),
-      "duration" -> Map("hours" -> 24)
-    ),
-    variables = Set(humidityOkDef.entity),
+  private val humidityOkRatioDef = HistoryStatsDef(
+    name = s"$entityNamePrefix humidity ok last 24h ratio",
+    source = humidityOkDef.entity,
+    sourceStates = Seq(true),
+    statsType = HistoryStatsType.Ratio,
+    period = Period.untilNow(24.hours),
   )
 
   private val tooHumidSensorDef = hysteresisSensor(
