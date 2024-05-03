@@ -16,3 +16,6 @@ case class Grid(
 
   override def variables: Set[Entity[_]] = cards.flatMap(_.variables).toSet
 
+object Grid:
+  def autoColumns(square: Boolean, title: Option[String] = None)(cards: Card*): Grid =
+    Grid(square = square, title = title, columns = cards.length)(cards*)
