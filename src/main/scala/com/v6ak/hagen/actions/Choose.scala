@@ -26,16 +26,19 @@ abstract class Choose extends Action{
   ).toSet
 }
 
+@deprecated("Use ConditionalAction instead")
 case class ChooseWithoutDefault(branches: Seq[(Conditions, Actions)]) extends Choose with ChooseBuilder {
   def when(conditions: Conditions, actions: Actions) = ChooseWithoutDefault(branches = branches ++ Seq((conditions, actions)))
   def default(actions: Actions) = ChooseWithDefault(branches = branches, defaultActions = actions)
   override def defaultOption: Option[Actions] = None
 }
 
+@deprecated("Use ConditionalAction instead")
 case class ChooseWithDefault[T](branches: Seq[(Conditions, Actions)], defaultActions: Actions) extends Choose {
   override def defaultOption: Option[Actions] = Some(defaultActions)
 }
 
+@deprecated("Use ConditionalAction instead")
 trait ChooseBuilder {
   def when(conditions: Conditions, actions: Actions): ChooseWithoutDefault
   def when(condition: Condition, actions: Actions): ChooseWithoutDefault =
