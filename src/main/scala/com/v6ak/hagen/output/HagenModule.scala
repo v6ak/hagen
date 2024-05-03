@@ -38,6 +38,7 @@ object Sensors extends SeqHagenKey[GenericSensorDef[_]] {}
 object Templates extends SeqHagenKey[TemplateSensorDef[_]] {}
 object Counters extends SeqHagenKey[CounterDef] {}
 object Updatables extends SeqHagenKey[Updatable] {}
+object Timers extends SeqHagenKey[TimerDef] {}
 
 final case class SingleObject[K, T](key: K)(implicit classTag: ClassTag[T]) extends SingleHagenKey[T] {}
 
