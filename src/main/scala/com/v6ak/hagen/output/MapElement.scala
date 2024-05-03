@@ -8,6 +8,9 @@ final case class MapElement(map: Map[String, Element]) extends DelegatingElement
 
   override def subElements: Set[Element] = map.values.toSet
 
+object MapElement:
+  def apply(tuples: (String, Element)*) = new MapElement(Map(tuples*))
+
 final case class StringElement(s: String) extends DelegatingElement:
   override def toStructure(context: Context): Any = s
 
