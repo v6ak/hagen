@@ -24,6 +24,7 @@ def AssignSeq[T, U](value: Seq[Expr[T]])(f: Seq[Expr[T]] => Expr[U]): Expr[U] = 
 implicit final class StringOps(e: Expr[String]) extends AnyVal:
   import unsafe.*
   def +(other: Expr[String]): Expr[String] = BinOp("+")(e, other)
+  def asDatetime: Expr[Instant] = FilterExpr(e, "as_datetime")
 
 trait OrderingOps[T] extends Any:
   import unsafe.*
