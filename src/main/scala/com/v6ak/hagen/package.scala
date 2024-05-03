@@ -12,6 +12,8 @@ package object hagen:
 
   def ifNonDefault[T](value: T, defaultValue: T): Option[T] = if value == defaultValue then None else Some(value)
 
+  def mapIfNonDefault[T](name: String, value: T, defaultValue: T): Map[String, T] = optionalMap(name, ifNonDefault(value, defaultValue))
+
   def optionalMap[T](name: String, valueOption: Option[T]): Map[String, T] = valueOption.fold(Map.empty)(value =>
     Map(name -> value)
   )
