@@ -1,6 +1,7 @@
 package com.v6ak.hagen.expressions
 
-import com.v6ak.hagen.{TupleElement, haName, optionalMap}
+import com.v6ak.hagen.output.{HagenKey, UtilityMeters}
+import com.v6ak.hagen.{SimpleEntityDef, TupleElement, haName, optionalMap}
 
 enum UtilityMeterCycle(override val toString: String):
   case QuarterHourly extends UtilityMeterCycle("quarter-hourly")
@@ -17,7 +18,7 @@ final case class UtilityMeterDef[T](
   source: Entity[T],
   cycle: UtilityMeterCycle,
   friendlyName: Option[String] = None,
-)(implicit jinjaType: Type[T]) extends TupleElement:
+)(implicit jinjaType: Type[T]) extends TupleElement with SimpleEntityDef[T, Seq[UtilityMeterDef[?]]]:
   override def toStructure(context: Context): (String, Map[_, _]) = entity.baseName -> toInnerStructure(context)
 
   def toInnerStructure(context: Context): Map[_, _] = Map(
@@ -30,3 +31,7 @@ final case class UtilityMeterDef[T](
   override def defined: Set[Entity[_]] = Set(entity)
 
   def entity = Entity[T](haName("sensor", name))
+
+  override def key: HagenKey[Seq[UtilityMeterDef[_]]] = UtilityMeters
+
+  override def createHagenDefinition: Seq[UtilityMeterDef[_]] = Seq(this)

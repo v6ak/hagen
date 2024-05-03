@@ -1,14 +1,16 @@
 package com.v6ak.hagen.expressions
 
-import com.v6ak.hagen.output.{MapElement, StringElement}
-import com.v6ak.hagen.{Element, TupleElement, haName, optionalMap}
+import com.v6ak.hagen.output.{HagenKey, InputBooleans}
+import com.v6ak.hagen.{EntityDef, TupleElement, expressions, haName, optionalMap}
 
 final case class InputBooleanDef(
   name: String,
   initial: Option[Boolean] = None,
   icon: Option[String] = None
-) extends TupleElement:
-  // TODO: EntityDef
+) extends TupleElement with EntityDef[InputBoolean, Seq[InputBooleanDef]]:
+  override def key: HagenKey[Seq[InputBooleanDef]] = InputBooleans
+
+  override def createHagenDefinition: Seq[InputBooleanDef] = Seq(this)
 
   def entity = InputBoolean(haName("input_boolean", name))
 

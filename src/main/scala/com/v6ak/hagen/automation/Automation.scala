@@ -4,16 +4,20 @@ import com.v6ak.hagen.{Element, EntityDef, NakeableElement, haName}
 import com.v6ak.hagen.actions.Action
 import com.v6ak.hagen.conditions.Condition
 import com.v6ak.hagen.expressions.{AutomationEntity, Context, Entity, Switch}
+import com.v6ak.hagen.output.{Automations, HagenKey}
 
 
 final case class Automation(
   id: String,
   alias: String,
   base: AutomationBase,
-) extends NakeableElement with EntityDef[AutomationEntity]:
+) extends NakeableElement with EntityDef[AutomationEntity, Seq[Automation]]:
   def toStructure(context: Context): Any = Map(
     s"automation $id" -> toInnerStructure(context)
   )
+
+  override def key: HagenKey[Seq[Automation]] = Automations
+  override def createHagenDefinition: Seq[Automation] = Seq(this)
 
   def toInnerStructure(context: Context): Any = {
     val newContext = context.copy(currentAutomation = Some(entity))

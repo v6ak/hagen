@@ -2,19 +2,27 @@ package com.v6ak.hagen
 
 import com.v6ak.hagen.dashboards.Icon
 import com.v6ak.hagen.expressions.*
+import com.v6ak.hagen.output.{HagenKey, Sensors, Templates}
 
 import scala.collection.immutable.Map
 import scala.reflect.{ClassTag, Enum}
 
-trait EntityDef[E <: Entity[?]] extends Element:
+trait EntityDef[E <: Entity[?], K] extends Element:
   def entity: E
+  def key: HagenKey[K]
+  def createHagenDefinition: K
 
-trait SimpleEntityDef[T] extends EntityDef[Entity[T]]
+trait SimpleEntityDef[T, K] extends EntityDef[Entity[T], K]
 
-abstract class GenericSensorDef[T] extends SimpleEntityDef[T]:
+abstract class GenericSensorDef[T] extends SimpleEntityDef[T, Seq[GenericSensorDef[?]]]:
   def entity: Entity[T]
 
-abstract class TemplateSensorDef[T](implicit jinjaType: Type[T]) extends SimpleEntityDef[T]:
+  override def key: HagenKey[Seq[GenericSensorDef[?]]] = Sensors
+
+  override def createHagenDefinition: Seq[GenericSensorDef[?]] = Seq(this)
+
+
+abstract class TemplateSensorDef[T](implicit jinjaType: Type[T]) extends SimpleEntityDef[T, Seq[TemplateSensorDef[?]]]:
   def sensorType: String
   def name: String
   def state: Expr[T]
@@ -24,6 +32,8 @@ abstract class TemplateSensorDef[T](implicit jinjaType: Type[T]) extends SimpleE
   def deviceClass: Option[String]
   def entity: Entity[T] = Entity[T](haName(sensorType, name))
   def unit: Option[String]
+  override def key: HagenKey[Seq[TemplateSensorDef[?]]] = Templates
+  override def createHagenDefinition: Seq[TemplateSensorDef[?]] = Seq(this)
   override def toStructure(context: Context): Any = Map(
     sensorType -> (
       Map(
