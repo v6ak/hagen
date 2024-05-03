@@ -3,6 +3,9 @@ package com.v6ak.hagen.expressions.unsafe
 import com.v6ak.hagen.expressions.{Context, Entity, Expr, Transformer}
 
 final class BinOp[O, A, B](operator: String)(a: Expr[A], b: Expr[B]) extends Expr[O]:
+  assert(operator != null)
+  assert(a != null)
+  assert(b != null)
   override def asJinja(context: Context): String =
     s"${a.asContextSafeJinja(context)} $operator ${b.asContextSafeJinja(context)}"
 
