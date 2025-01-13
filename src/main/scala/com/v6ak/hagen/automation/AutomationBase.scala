@@ -1,5 +1,6 @@
 package com.v6ak.hagen.automation
 
+import com.v6ak.hagen.Nameable
 import com.v6ak.hagen.actions.Action
 import com.v6ak.hagen.conditions.{Condition, TemplateCondition}
 import com.v6ak.hagen.expressions.unsafe.VarExpr
@@ -14,7 +15,7 @@ final case class AutomationBase(
   triggers: Seq[Trigger[_]],
   actions: Seq[Action],
   mode: ScriptMode = ScriptMode.Single,
-):
+) extends Nameable[Automation]:
 
   def toStructureFragment(context: Context): Map[String, Any] = Map(
     "mode" -> mode.name,
@@ -29,6 +30,7 @@ final case class AutomationBase(
 
   def subElements = (conditions ++ triggers ++ actions).toSet
 
+  override def withName(name: String): Automation = toAutomation(name)
   def toAutomation(id: String): Automation = Automation(id = id, alias = id, base = this)
   def toAutomation(id: String, alias: String): Automation = Automation(id = id, alias = alias, base = this)
 
